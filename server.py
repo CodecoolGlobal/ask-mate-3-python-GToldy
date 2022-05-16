@@ -64,15 +64,20 @@ def add_new_question():
 
 @app.route('/question/<question_id>/add-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     question = data_manager.get_question_by_id(question_id)
     if request.method == 'POST':
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_answer(request.form, question_id, image_file)
+            data_manager.add_new_answer(request.form, question_id, user_id, image_file)
         else:
-            data_manager.add_new_answer(request.form, question_id)
+            data_manager.add_new_answer(request.form, question_id, user_id)
         return redirect(url_for('get_question_page', question_id=question_id))
     return render_template('add-answer.html', question=question, answer=None)
 
