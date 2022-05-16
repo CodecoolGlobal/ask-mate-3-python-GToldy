@@ -271,3 +271,10 @@ mark {
 .new-tag {
     margin: 0.5rem;
 }
+
+table,th, td {
+    margin: 0.25rem;
+    padding: 0.25rem;
+    color: white;
+    border: white solid 1px;
+}
