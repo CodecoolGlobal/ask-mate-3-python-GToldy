@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, session, escape, request
 import data_manager
 import os
 import time
@@ -6,6 +6,8 @@ import time
 from util import mark_search_word
 
 app = Flask(__name__)
+
+app.secret_key = b'_5#y2LF4Q8z'
 
 
 @app.route('/')
@@ -42,14 +44,20 @@ def get_question_page(question_id):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_new_question():
+    user_id = None
+
+    if 'username' in session:
+    user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
+
     if request.method == 'POST':
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_question(request.form, image_file)
+            data_manager.add_new_question(request.form, user_id, image_file)
         else:
-            data_manager.add_new_question(request.form)
+            data_manager.add_new_question(request.form, user_id)
         return redirect('list')
     return render_template('add-question.html', question=None)
 

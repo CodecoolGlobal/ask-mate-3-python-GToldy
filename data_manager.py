@@ -10,15 +10,16 @@ import util
 
 
 @database_common.connection_handler
-def add_new_question(cursor, question_details, image_file=''):
+def add_new_question(cursor, question_details, user_id, image_file=''):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO question
-        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s )
+        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time, 'view_n': 0,
-    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file})
+    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file,
+    'user_id': user_id})
 
 
 
@@ -418,3 +419,14 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
         FROM question_tag
         WHERE question_tag.question_id=%(question_id)s AND tag_id=%(tag_id)s'''
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+
+@database_common.connection_handler
+def get_user_id_by_user_name(cursor, user_name):
+    query = """
+        SELECT user_id
+        FROM users
+        WHERE username = %(user_name)s
+        """
+    cursor.execute(query, {'user_name': user_name})
+    return cursor.fetchall()
