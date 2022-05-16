@@ -421,8 +421,7 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 
 @database_common.connection_handler
-def get_user(cursor):
-    query = '''SELECT *
-        FROM users'''
+def get_all_users(cursor):
+    query = "SELECT username, SPLIT_PART(registration_date::TEXT, ' ', 1) AS date FROM users"
     cursor.execute(query)
     return cursor.fetchall()

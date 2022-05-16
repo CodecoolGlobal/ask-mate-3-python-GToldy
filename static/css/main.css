@@ -276,10 +276,10 @@ table,th, td {
     margin: 0.25rem;
     padding: 0.25rem;
     color: white;
-    border: white solid 1px;
+    border:#00212f solid 2px;
     border-collapse: collapse;
 }
 
 th {
-    border:white solid 2px;
+    border:#00212f solid 2px;
 }

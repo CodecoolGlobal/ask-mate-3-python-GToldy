@@ -1,6 +1,3 @@
 <footer>
-    <a href="/">Back to home</a>
-{#    {% if session.username %}#}
-        <a href="/users">Users</a>
-{#    {% endif %}#}
+    <a href="{{ url_for('latest_5_questions') }}">Back to home</a>
 </footer>

@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, url_for
 import data_manager
 import os
 import time
+from datetime import datetime
 
 from util import mark_search_word
 
@@ -203,7 +204,7 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/users')
 def user_page():
-    users = data_manager.get_user()
+    users = data_manager.get_all_users()
     return render_template('users.html', users=users)
 
 
