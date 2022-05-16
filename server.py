@@ -1,11 +1,13 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, flash
 import data_manager
 import os
 import time
 
+import util
 from util import mark_search_word
 
 app = Flask(__name__)
+app.secret_key = util.generate_random_secret_key()
 
 
 @app.route('/')
@@ -34,7 +36,7 @@ def get_question_page(question_id):
     answers = data_manager.get_answers(question_id=question_id)
 
     if request.method == 'POST':
-        data_manager.delete_question_by_id(question_id)  # Törlésre át kell adni a képet majd.
+        data_manager.delete_question_by_id(question_id)
         return redirect(url_for('list_questions'))
 
     return render_template('question.html', question=questions, answers=answers, comments=comments, tag_list=question_tag)
@@ -203,7 +205,22 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/registration', methods=['GET', 'POST'])
 def user_registration():
+    if request.method == 'POST':
+        print(request.form)
+        is_verified, user, flash_massage = util.verify_registration_details(request.form)
+        print(user)
+        if is_verified:
+            username, email, password = user
+            data_manager.add_new_user(username, email, password)
+            flash(flash_massage, 'info')
+            return redirect(url_for('list_questions'))
+        else:
+            flash(flash_massage, 'error')
+            return redirect(url_for('user_registration'))
     return render_template('registration.html')
+
+
+
 
 
 if __name__ == "__main__":

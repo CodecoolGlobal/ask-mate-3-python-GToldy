@@ -1,26 +1,35 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <form action="{{ url_for('user_registration') }} method=POST">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <section class="flash-messages">
+                {% for category, message in messages %}
+                    <span class="flash-{{ category }}">{{ message }}</span>
+                {% endfor %}
+            </section>
+        {% endif %}
+    {% endwith %}
+    <form action="{{ url_for('user_registration') }}" method="POST">
         <div class="form-input">
             <label for="username-input">Username</label>
-            <input type="text" id="username/input" name="username" required>
+            <input type="text" id="username-input" name="username" required>
         </div>
         <div class="form-input">
             <label for="email-input">Email</label>
-            <input type="email">
+            <input type="email" id="email-input" name="email" required>
         </div>
         <div class="form-input">
             <label for="email-check-input">Email check</label>
-            <input type="email">
+            <input type="email" id="email-check-input" name="email-check" required>
         </div>
         <div class="form-input">
             <label for="password-input">Password</label>
-            <input type="password">
+            <input type="password" id="password-input" name="password" required>
         </div>
         <div class="form-input">
             <label for="password-check-input">Password check</label>
-            <input type="password">
+            <input type="password" id="password-check-input" name="password-check" required>
         </div>
         <button type="submit">Sign up</button>
     </form>
