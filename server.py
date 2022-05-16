@@ -201,6 +201,12 @@ def delete_tag(question_id, tag_id):
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
+@app.route('/users')
+def user_page():
+    users = data_manager.get_user()
+    return render_template('users.html', users=users)
+
+
 if __name__ == "__main__":
     app.run(
         port=5000,

@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>User list:</h1>
+<section>
+    {% for user in users %}
+        <ul>
+            <li>
+                {{ user.username, user.registration_date }}
+            </li>
+        </ul>
+    {% endfor %}
+</section>
+
+{% endblock %}

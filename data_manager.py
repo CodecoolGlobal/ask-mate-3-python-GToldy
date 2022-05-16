@@ -418,3 +418,11 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
         FROM question_tag
         WHERE question_tag.question_id=%(question_id)s AND tag_id=%(tag_id)s'''
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+
+@database_common.connection_handler
+def get_user(cursor):
+    query = '''SELECT *
+        FROM users'''
+    cursor.execute(query)
+    return cursor.fetchall()
