@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <form action="{{ url_for('user_registration') }} method=POST">
+        <div class="form-input">
+            <label for="username-input">Username</label>
+            <input type="text" id="username/input" name="username" required>
+        </div>
+        <div class="form-input">
+            <label for="email-input">Email</label>
+            <input type="email">
+        </div>
+        <div class="form-input">
+            <label for="email-check-input">Email check</label>
+            <input type="email">
+        </div>
+        <div class="form-input">
+            <label for="password-input">Password</label>
+            <input type="password">
+        </div>
+        <div class="form-input">
+            <label for="password-check-input">Password check</label>
+            <input type="password">
+        </div>
+        <button type="submit">Sign up</button>
+    </form>
+{% endblock %}
