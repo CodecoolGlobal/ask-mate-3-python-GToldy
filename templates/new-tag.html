@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <form action=/question/{{ question_id }}/new-tag method="POST">
+        <p>Choose a tag:</p>
+        <select name="choose-tag">
+            <option value="">--Select tag--</option>
+            {% for tag in tag_list %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+            {% endfor %}
+        </select>
+        <p>Or add a new one:</p>
+        <div class="form-input">
+            <label for="tag-input">New tag:</label>
+            <input name="new-tag" id="tag-input"></input>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

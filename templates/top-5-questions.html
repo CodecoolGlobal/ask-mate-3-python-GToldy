@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block content %}
+<nav id="edit-question-nav" class="navigation">
+    <a id="top-question-button" href="/list">To all questions.</a>
+</nav>
+
+<ul>
+    {% for question in questions %}
+    <li><a href="/question/{{ question.id }}">{{ question.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,273 @@
+* {color: black;}
+
+html {
+    position:relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+}
+
+header img {
+    height: 80px;
+    width: 80px;
+}
+
+body {
+    background: #023144;  
+    font-family: aakar;
+    margin: 1rem auto;
+    padding: 20px;
+    width: 70vw;
+    box-shadow:0 0 5px black;
+}
+
+
+li {background: #3178fa;
+    color: white;
+    list-style: none;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    box-shadow: 1px 1px 3px black;
+}
+
+li:hover {
+    background: #2660c6;
+    border-radius: 15px;
+    box-shadow: 0 2px 3px black;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+form {
+    width: 400px;
+    margin: 0 auto;
+}
+
+#add-question-button,
+#edit-question-button,
+#add-answer-button,
+#add-new-comment,
+#top-question-button {
+    color: black;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem 0.25rem;
+    border-radius: 0.5rem;
+    background: #49e9cc;
+    box-shadow: 0 0 5px black;
+}
+
+#add-question-button:hover,
+#edit-question-button:hover,
+#add-answer-button:hover,
+#add-new-comment:hover,
+#top-question-button:hover {
+    background:#42c1aa;
+    box-shadow: 0 0 2px grey;
+}
+
+#add-question-button:active,
+#edit-question-button:active,
+#add-answer-button:active,
+#add-new-comment:active,
+#top-question-button:active {
+    box-shadow:inset 0 0 5px black;
+}
+
+.navigation {
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.navigation form{
+    width: auto;
+    margin: 0;
+    display:flex;
+    align-items: center;
+}
+
+select, button, input ,
+textarea{border:0;
+    margin: 0.5rem;
+    border-radius: 0.25rem;
+    padding:0.25rem;
+    background: #269592;
+}
+
+button:hover,
+#search-submit:hover {
+    background: #20807d
+}
+
+button:active,
+#search-submit:active {
+    box-shadow:inset 0 0 5px black;
+}
+
+ul {
+    padding:0;
+    width: 90%;
+    margin:0 auto;
+}
+
+#title-input, #message-input {
+    color:black;
+}
+
+#delete-form {
+    margin:0;
+}
+
+.edit-answer-button, .delete-comment {
+    color: white;
+    background: none;
+    right: 25%;
+    padding: 5px;
+    border-radius: 0.5rem;
+    font-size: 65%;
+    letter-spacing: 1px;
+    align-self: flex-end;
+}
+
+.comment{
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-comment {
+    font-size: 100%;
+    font-family: "Tlwg Typist";
+}
+.edit-answer-button:hover {
+    background:#2456b3eb;
+}
+.edit-answer-button:active {
+    box-shadow:inset 0 0 5px #0000004a;
+}
+
+#delete-question-button {
+    color: white;
+    background: none;
+    font-size: 65%;
+    letter-spacing: 1px;
+    display: flex;
+    position: absolute;
+    right: -45%;
+    width: 70vw;
+}
+
+#question {
+    width:60vw;
+    margin:1rem auto 2rem;
+    padding:0.5rem 1rem;
+    box-shadow: inset 0 0 2px white;
+}
+
+#question-body {
+    display: flex;
+    justify-content: space-between;
+}
+
+#question-body > img {
+    max-width: 10rem;
+}
+
+#question-footer {
+    display: flex;
+    align-items: center;
+    font-size: 80%;
+}
+
+#answers ul {
+    margin: 1.5rem auto;
+}
+
+a,
+h1,
+label,
+#answers li,
+#comments-text,
+#question h3, p {
+    color: white;
+    text-decoration: none;
+}
+
+input[type='file'] {
+    color: white;
+}
+
+.answer-image {
+    width:150px;
+    display:inline-block
+}
+
+img {
+    width:100%
+}
+
+.answer-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0.5rem;
+}
+
+.edit-answer-comment {
+    background:#2457b5;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-answer-comment:hover {
+    background:#1f4b9d;
+}
+
+.answer-result {
+    margin-left: 1.5rem;
+}
+
+::placeholder {
+    color: #ffffffbd
+}
+
+select {
+    color: #ffffff
+}
+
+mark {
+    background: #b376e9;
+    padding: 0.2rem 0.2rem 0;
+    border-radius: 7.5px;
+}
+
+#confirmation {
+    margin: 2rem auto;
+    width: 400px;
+    display:flex;
+    flex-direction:column;
+    align-items:center
+}
+
+#delete-confirm {
+    display:flex;
+    justify-content: right;
+}
+
+.tags{
+    background: #49e9cca1;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem;
+    border-radius: 0.5rem;
+    font-weight: 900;
+}
+
+.new-tag {
+    margin: 0.5rem;
+}

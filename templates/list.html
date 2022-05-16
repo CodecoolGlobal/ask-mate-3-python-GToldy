@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block content %}
+<nav class="navigation">
+    <a id="add-question-button" href="/add-question">Add new question</a>
+    <section style="display: flex; justify-content: space-between; width: 100%">
+        <form action="/list" method="get">
+            <select name="order_by" id="order-input">
+                <option value="submission_time" {{ 'selected' if order.order_by=='submission_time' }}>Submission time</option>
+                <option value="title" {{ 'selected' if order.order_by=='title' }}>Title</option>
+                <option value="message" {{ 'selected' if order.order_by=='message' }}>Message</option>
+                <option value="view_number" {{ 'selected' if order.order_by=='view_number' }}>Number of views</option>
+                <option value="vote_number" {{ 'selected' if order.order_by=='vote_number' }}>Number of votes</option>
+            </select>
+            <select name="order_direction" id="direction-input">
+                <option value="True" {{ 'selected' if order.order_direction=='True' }}>Descending</option>
+                <option value="False" {{ 'selected' if order.order_direction=='False' }}>Ascending</option>
+            </select>
+            <button type="submit">Sort</button>
+
+        </form>
+        <form id="search-form" action="/search" method="get">
+            <input type="text" name="q" id="search-text-area" placeholder="Search">
+            <input type="submit" value="Search" id="search-submit">
+        </form>
+    </section>
+</nav>
+<ul>
+    {% for question in questions %}
+    <li><a href="/question/{{ question.id }}">{{ question.title }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

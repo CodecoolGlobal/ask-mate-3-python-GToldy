@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <header>
+        <h1>Ghostbusters online hotline</h1>
+        <img src="/static/images/gblogo.png" alt="Can not load image">
+    </header>
+    <section>
+        {% block content %}{% endblock %}
+    </section>
+{% include 'footer.html' %}
+</body>
+
+</html>
+

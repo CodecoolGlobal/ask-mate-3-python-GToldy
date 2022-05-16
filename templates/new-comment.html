@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+
+    <form action={% if where == "question" %} "/question/{{ question_id }}/new-comment"
+        {% elif where == "answer" %} "/answer/{{ answer_id }}/new-comment"
+        {% elif where == "comment" %} "/comment/ {{ comment_id }}/edit"   {% endif %}
+          method="POST" , enctype="multipart/form-data">
+        <div class="form-input">
+        <label for="comment-input">Comment here:</label>
+        <textarea name="comment" id="comment-input" cols="30" rows="10"> {% if where == "comment" %} {{ comment.message if comment.message }} {% endif %}</textarea>
+    </div>
+    <div class="form-input">
+        <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png">
+    </div>
+    <button type="submit">Submit</button>
+    </form>
+
+
+</html>
+
+
+
+{% endblock %}
