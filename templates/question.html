@@ -24,6 +24,8 @@
             <span class="tags">{{ tag.name }} <a class="delete-tag" href="/question/{{ question.id }}/tag/{{ tag.id }}/delete">x</a></span>
         {% endfor %}
         <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
+        <p><a id="all-tags-button" href="/tags">All tags</a></p>
+
     </footer>
     <section>
         <p id="comments-text" >Comments for question:</p>
