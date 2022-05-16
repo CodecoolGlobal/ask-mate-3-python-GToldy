@@ -170,27 +170,27 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
 
 
 @database_common.connection_handler
-def add_new_comment_to_question(cursor, comment, question_id):
+def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'question_id': question_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
 
 
 @database_common.connection_handler
-def add_new_comment_to_answer(cursor, comment, answer_id):
+def add_new_comment_to_answer(cursor, comment, answer_id, user_id):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'answer_id': answer_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
 
 
 

@@ -117,8 +117,13 @@ def edit_answer(answer_id):
 def new_comment_to_question(question_id):
     where = "question"
 
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     if request.method == 'POST':
-        data_manager.add_new_comment_to_question(request.form, question_id)
+        data_manager.add_new_comment_to_question(request.form, question_id, user_id)
         return redirect(url_for('get_question_page', question_id=question_id))
 
     return render_template('new-comment.html', question_id=question_id, where=where)
@@ -127,9 +132,15 @@ def new_comment_to_question(question_id):
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id):
     where = "answer"
+
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     q_id = data_manager.get_question_id_by_answer_id(answer_id)
     if request.method == 'POST':
-        data_manager.add_new_comment_to_answer(request.form, answer_id)
+        data_manager.add_new_comment_to_answer(request.form, answer_id, user_id)
 
         return redirect(url_for('get_question_page', question_id=q_id))
 
