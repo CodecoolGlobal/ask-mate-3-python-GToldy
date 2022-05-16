@@ -47,7 +47,7 @@ def add_new_question():
     user_id = None
 
     if 'username' in session:
-    user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
 
 
     if request.method == 'POST':
