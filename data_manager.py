@@ -418,3 +418,37 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
         FROM question_tag
         WHERE question_tag.question_id=%(question_id)s AND tag_id=%(tag_id)s'''
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+
+@database_common.connection_handler
+def get_question_vote_num(cursor, question_id):
+    query = '''SELECT vote_number
+                FROM question
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_answer_vote_num(cursor, answer_id):
+    query = '''SELECT vote_number
+                FROM answer
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_question_vote_num(cursor, question_id, vote_number):
+    query = '''UPDATE question
+                SET vote_number=%(vote_number)s
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_answer_vote_num(cursor, answer_id, vote_number):
+    query = '''UPDATE answer
+                SET vote_number=%(vote_number)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
