@@ -12,10 +12,11 @@
 <body>
     <header>
         <h1>Ghostbusters online hotline</h1>
-        <img src="/static/images/gblogo.png" alt="Can not load image">
         {#    {% if session.username %}#}
         <a href="/users">Users</a>
         {#    {% endif %}#}
+        <img src="/static/images/gblogo.png" alt="Can not load image">
+
     </header>
     <section>
         {% block content %}{% endblock %}

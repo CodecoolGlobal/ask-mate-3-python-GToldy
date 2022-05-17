@@ -203,9 +203,15 @@ def delete_tag(question_id, tag_id):
 
 
 @app.route('/users')
-def user_page():
+def users_list():
     users = data_manager.get_all_users()
     return render_template('users.html', users=users)
+
+
+@app.route('/users/<user_id>')
+def user_page(user_id):
+    user = data_manager.get_specific_user(user_id)
+    return render_template('user.html', user=user)
 
 
 if __name__ == "__main__":
