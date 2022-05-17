@@ -17,7 +17,8 @@ create table if not exists users
     username          varchar(15)  not null,
     email             varchar(30)  not null,
     password          varchar(100) not null,
-    registration_date timestamp
+    registration_date timestamp,
+    reputation_number int
 );
 
 alter table users
