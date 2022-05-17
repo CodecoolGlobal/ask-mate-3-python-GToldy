@@ -25,6 +25,9 @@
         {% endfor %}
         <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
     </footer>
+    <section class="vote-buttons">
+        <a href="/question/{{ question.id}}/vote-down">-</a> {{ question.vote_number }} <a href="/question/{{ question.id}}/vote-up">+</a>
+    </section>
     <section>
         <p id="comments-text" >Comments for question:</p>
         <ul>
@@ -58,6 +61,9 @@
                     <a class="edit-answer-button" href="/answer/{{ answer.id }}/edit">Edit answer</a>
                     <a class="add-comment-to-answer" href="/answer/{{ answer.id }}/new-comment"> {{ answer.message }} </a>
                 </section>
+            </section>
+            <section class="vote-buttons">
+                <a href="/answer/{{ answer.id}}/vote-down">-</a> {{ answer.vote_number }} <a href="/answer/{{ answer.id}}/vote-up">+</a>
             </section>
             <section>
             {% if comments is not none %}

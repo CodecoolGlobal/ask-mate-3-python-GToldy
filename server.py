@@ -201,6 +201,40 @@ def delete_tag(question_id, tag_id):
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
+@app.route('/question/<question_id>/vote-up')
+def question_vote_up(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num += 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/question/<question_id>/vote-down')
+def question_vote_down(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-up')
+def answer_vote_up(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num += 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-down')
+def answer_vote_down(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         port=5000,

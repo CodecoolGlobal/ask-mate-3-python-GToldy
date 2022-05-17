@@ -27,7 +27,7 @@
 </nav>
 <ul>
     {% for question in questions %}
-    <li><a href="/question/{{ question.id }}">{{ question.title }}</a></li>
+    <li><a href="/question/{{ question.id }}">{{ question.title }}</a> <snap class="vote-number">{{ question.vote_number }}</snap></li>
     {% endfor %}
 </ul>
 
