@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash
+from flask import Flask, redirect, render_template, request, url_for, flash, session
 import data_manager
 import os
 import time
@@ -206,9 +206,7 @@ def delete_tag(question_id, tag_id):
 @app.route('/registration', methods=['GET', 'POST'])
 def user_registration():
     if request.method == 'POST':
-        print(request.form)
         is_verified, user, flash_massage = util.verify_registration_details(request.form)
-        print(user)
         if is_verified:
             username, email, password = user
             data_manager.add_new_user(username, email, password)
@@ -220,7 +218,24 @@ def user_registration():
     return render_template('registration.html')
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def user_log_in():
+    if request.method == 'POST':
+        is_verified, username, flash_message = util.verify_log_in_details(request.form)
+        if is_verified:
+            session['username'] = username
+            flash(flash_message, 'info')
+            return redirect(url_for('list_questions'))
+        else:
+            flash(flash_message, 'error')
+            return redirect(url_for('user_log_in'))
+    return render_template('login.html')
 
+
+@app.route('/logout')
+def user_log_out():
+    session.pop('username', None)
+    return redirect(url_for('list_questions'))
 
 
 if __name__ == "__main__":

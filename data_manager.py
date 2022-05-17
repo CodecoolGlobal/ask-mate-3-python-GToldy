@@ -411,7 +411,8 @@ def add_new_user(cursor, username, email, password):
 
 
 @database_common.connection_handler
-def get_user_by_email(cursor, email):
-    query = "SELECT * FROM users WHERE email = %(email)s"
-    cursor.execute(query, {'email': email})
+def get_user_by_detail(cursor, user_login):
+    username, email = user_login
+    query = "SELECT * FROM users WHERE email = %(email)s OR username = %(username)s"
+    cursor.execute(query, {'username': username, 'email': email})
     return cursor.fetchone()
