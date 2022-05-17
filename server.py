@@ -102,6 +102,11 @@ def edit_answer(answer_id):
     answer = data_manager.get_answers_by_id(answer_id)
     question_id = answer['question_id']
     if request.method == 'POST':
+        if 'unaccepted_state' in request.form:
+            data_manager.update_answer_acception_by_id(answer_id, request.form['unaccepted_state'])
+            print('ok')
+
+            return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':

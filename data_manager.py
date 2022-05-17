@@ -305,7 +305,7 @@ def get_answers_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def update_answers_by_id(cursor, answer_detail, answer_id, image_file):
+def update_answers_by_id(cursor, answer_detail, answer_id, image_file=''):
     update = """
             UPDATE answer
             SET  message = %(message)s, image = %(image)s 
@@ -430,3 +430,23 @@ def get_user_id_by_user_name(cursor, user_name):
         """
     cursor.execute(query, {'user_name': user_name})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_number_by_user_id(cursor, user_id):
+    query = ''' SELECT COUNT(user_id) as number
+                FROM question
+                WHERE user_id = %(user_id)s 
+                '''
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()['number']
+
+
+@database_common.connection_handler
+def update_answer_acception_by_id(cursor, answer_id, accepted_state):
+    update = """
+            UPDATE answer
+            SET  accepted_state = %(state)s 
+            WHERE id = %(answer_id)s
+            """
+    cursor.execute(update, {'answer_id': answer_id, 'state': accepted_state})
