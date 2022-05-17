@@ -88,11 +88,8 @@ create table if not exists comment
 alter table comment
     owner to polandrea;
 
-create table if not exists question_tag
+create table question_tag
 (
-    id              serial
-        constraint pk_comment_id
-            primary key,
     question_id integer not null
         constraint fk_question_id
             references question
@@ -100,8 +97,9 @@ create table if not exists question_tag
     tag_id      integer not null
         constraint fk_tag_id
             references tag,
-    constraint pk_question_tag_id
-        primary key (question_id, tag_id)
+    id          integer not null
+        constraint question_tag_pk
+            primary key
 );
 
 alter table question_tag
@@ -145,6 +143,15 @@ UPDATE public.question SET submission_time = '2022-05-06 07:38:10.725847', view_
 UPDATE public.question SET submission_time = '2022-05-06 09:18:01.325382', view_number = 0, vote_number = 2, title = 'Is that true wrath can float?', message = 'I was always wondering about that.', image = '', user_id = 4 WHERE id = 7;
 UPDATE public.question SET submission_time = '2022-05-06 07:32:20.715643', view_number = 0, vote_number = 2, title = 'Will crocheted crucifix protect me?', message = 'My grandma made me a crucifix. I was wondering if thats helps against ghostes. Any idea?', image = '1651815140.6870358_crucifix.jpg', user_id = 4 WHERE id = 4;
 
+UPDATE public.question_tag SET question_id = 5, tag_id = 22 WHERE id = 7;
+UPDATE public.question_tag SET question_id = 0, tag_id = 19 WHERE id = 5;
+UPDATE public.question_tag SET question_id = 5, tag_id = 23 WHERE id = 9;
+UPDATE public.question_tag SET question_id = 1, tag_id = 21 WHERE id = 6;
+UPDATE public.question_tag SET question_id = 2, tag_id = 20 WHERE id = 4;
+UPDATE public.question_tag SET question_id = 1, tag_id = 1 WHERE id = 1;
+UPDATE public.question_tag SET question_id = 2, tag_id = 18 WHERE id = 2;
+UPDATE public.question_tag SET question_id = 2, tag_id = 19 WHERE id = 3;
+UPDATE public.question_tag SET question_id = 0, tag_id = 21 WHERE id = 8;
 UPDATE public.question_tag SET question_id = 7, tag_id = 21 WHERE id = 19;
 UPDATE public.question_tag SET question_id = 6, tag_id = 23 WHERE id = 18;
 UPDATE public.question_tag SET question_id = 6, tag_id = 20 WHERE id = 17;
@@ -155,3 +162,4 @@ UPDATE public.question_tag SET question_id = 0, tag_id = 22 WHERE id = 13;
 UPDATE public.question_tag SET question_id = 3, tag_id = 24 WHERE id = 12;
 UPDATE public.question_tag SET question_id = 3, tag_id = 21 WHERE id = 11;
 UPDATE public.question_tag SET question_id = 3, tag_id = 1 WHERE id = 10;
+
