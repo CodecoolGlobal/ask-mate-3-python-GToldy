@@ -117,26 +117,6 @@ UPDATE public.comment SET question_id = 0, answer_id = null, message = 'Please c
 UPDATE public.comment SET question_id = 6, answer_id = null, message = ' Oh no, why did you guys broke up?', submission_time = '2022-05-06 07:56:48.484878', edited_count = 0, user_id = 3 WHERE id = 5;
 UPDATE public.comment SET question_id = null, answer_id = 1, message = 'There is the number: 3-452-8756942', submission_time = '2022-05-05 23:10:56.670200', edited_count = 1, user_id = 4 WHERE id = 2;
 
-UPDATE public.question_tag SET  WHERE question_id = 1 AND tag_id = 1;
-UPDATE public.question_tag SET  WHERE question_id = 2 AND tag_id = 18;
-UPDATE public.question_tag SET  WHERE question_id = 2 AND tag_id = 19;
-UPDATE public.question_tag SET  WHERE question_id = 2 AND tag_id = 20;
-UPDATE public.question_tag SET  WHERE question_id = 0 AND tag_id = 19;
-UPDATE public.question_tag SET  WHERE question_id = 1 AND tag_id = 21;
-UPDATE public.question_tag SET  WHERE question_id = 0 AND tag_id = 21;
-UPDATE public.question_tag SET  WHERE question_id = 5 AND tag_id = 22;
-UPDATE public.question_tag SET  WHERE question_id = 5 AND tag_id = 23;
-UPDATE public.question_tag SET  WHERE question_id = 3 AND tag_id = 1;
-UPDATE public.question_tag SET  WHERE question_id = 3 AND tag_id = 21;
-UPDATE public.question_tag SET  WHERE question_id = 3 AND tag_id = 24;
-UPDATE public.question_tag SET  WHERE question_id = 0 AND tag_id = 22;
-UPDATE public.question_tag SET  WHERE question_id = 4 AND tag_id = 25;
-UPDATE public.question_tag SET  WHERE question_id = 4 AND tag_id = 26;
-UPDATE public.question_tag SET  WHERE question_id = 4 AND tag_id = 1;
-UPDATE public.question_tag SET  WHERE question_id = 6 AND tag_id = 20;
-UPDATE public.question_tag SET  WHERE question_id = 6 AND tag_id = 23;
-UPDATE public.question_tag SET  WHERE question_id = 7 AND tag_id = 21;
-
 UPDATE public.tag SET name = 'ghost' WHERE id = 1;
 UPDATE public.tag SET name = 'creepy' WHERE id = 18;
 UPDATE public.tag SET name = 'haunted' WHERE id = 19;
