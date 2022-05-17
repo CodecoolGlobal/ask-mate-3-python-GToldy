@@ -439,6 +439,8 @@ def get_user_id_by_user_name(cursor, user_name):
     cursor.execute(query, {'user_name': user_name})
     return cursor.fetchall()
 
+
+@database_common.connection_handler
 def get_question_vote_num(cursor, question_id):
     query = '''SELECT vote_number
                 FROM question
