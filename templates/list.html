@@ -25,7 +25,7 @@
         </form>
     </section>
 </nav>
-<ul>
+<ul id="question-list">
     {% for question in questions %}
     <li><a href="/question/{{ question.id }}">{{ question.title }}</a> <snap class="vote-number">{{ question.vote_number }}</snap></li>
     {% endfor %}
