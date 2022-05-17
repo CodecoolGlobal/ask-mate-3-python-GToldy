@@ -90,6 +90,9 @@ alter table comment
 
 create table if not exists question_tag
 (
+    id              serial
+        constraint pk_comment_id
+            primary key,
     question_id integer not null
         constraint fk_question_id
             references question
