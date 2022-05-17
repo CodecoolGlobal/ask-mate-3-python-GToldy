@@ -141,3 +141,14 @@ UPDATE public.question SET submission_time = '2017-04-28 08:29:00.000000', view_
 UPDATE public.question SET submission_time = '2022-05-06 07:38:10.725847', view_number = 0, vote_number = 0, title = 'Can I use any mirror for scrying or does it have to be cursed?', message = 'My wife have a big antique (and ugly) mirror it is propably not cursed but I kinda wanna get rid of it.', image = '', user_id = 1 WHERE id = 5;
 UPDATE public.question SET submission_time = '2022-05-06 09:18:01.325382', view_number = 0, vote_number = 2, title = 'Is that true wrath can float?', message = 'I was always wondering about that.', image = '', user_id = 4 WHERE id = 7;
 UPDATE public.question SET submission_time = '2022-05-06 07:32:20.715643', view_number = 0, vote_number = 2, title = 'Will crocheted crucifix protect me?', message = 'My grandma made me a crucifix. I was wondering if thats helps against ghostes. Any idea?', image = '1651815140.6870358_crucifix.jpg', user_id = 4 WHERE id = 4;
+
+UPDATE public.question_tag SET question_id = 7, tag_id = 21 WHERE id = 19;
+UPDATE public.question_tag SET question_id = 6, tag_id = 23 WHERE id = 18;
+UPDATE public.question_tag SET question_id = 6, tag_id = 20 WHERE id = 17;
+UPDATE public.question_tag SET question_id = 4, tag_id = 1 WHERE id = 16;
+UPDATE public.question_tag SET question_id = 4, tag_id = 26 WHERE id = 15;
+UPDATE public.question_tag SET question_id = 4, tag_id = 25 WHERE id = 14;
+UPDATE public.question_tag SET question_id = 0, tag_id = 22 WHERE id = 13;
+UPDATE public.question_tag SET question_id = 3, tag_id = 24 WHERE id = 12;
+UPDATE public.question_tag SET question_id = 3, tag_id = 21 WHERE id = 11;
+UPDATE public.question_tag SET question_id = 3, tag_id = 1 WHERE id = 10;
