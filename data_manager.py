@@ -8,7 +8,6 @@ import datetime
 import util
 
 
-
 @database_common.connection_handler
 def add_new_question(cursor, question_details, user_id, image_file=''):
     submission_time = datetime.datetime.now()
@@ -20,7 +19,6 @@ def add_new_question(cursor, question_details, user_id, image_file=''):
     cursor.execute(add, {'time': submission_time, 'view_n': 0,
     'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file,
     'user_id': user_id})
-
 
 
 @database_common.connection_handler
@@ -404,6 +402,16 @@ def get_all_tags(cursor):
 
 
 @database_common.connection_handler
+def get_all_tags_with_num(cursor):
+    query = '''SELECT tag.name, COUNT(question_id) AS q_num
+                FROM tag
+            LEFT JOIN question_tag qt on tag.id = qt.tag_id
+            GROUP BY id
+            ORDER BY tag.name'''
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):
     query = '''SELECT name, id
             FROM tag
@@ -430,3 +438,35 @@ def get_user_id_by_user_name(cursor, user_name):
         """
     cursor.execute(query, {'user_name': user_name})
     return cursor.fetchall()
+
+def get_question_vote_num(cursor, question_id):
+    query = '''SELECT vote_number
+                FROM question
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_answer_vote_num(cursor, answer_id):
+    query = '''SELECT vote_number
+                FROM answer
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_question_vote_num(cursor, question_id, vote_number):
+    query = '''UPDATE question
+                SET vote_number=%(vote_number)s
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_answer_vote_num(cursor, answer_id, vote_number):
+    query = '''UPDATE answer
+                SET vote_number=%(vote_number)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
