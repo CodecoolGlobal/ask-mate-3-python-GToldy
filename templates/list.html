@@ -2,7 +2,9 @@
 
 {% block content %}
 <nav class="navigation">
-    <a id="add-question-button" href="/add-question">Add new question</a>
+    {% if session.username %}
+        <a id="add-question-button" href="/add-question">Add new question</a>
+    {% endif %}
     <section style="display: flex; justify-content: space-between; width: 100%">
         <form action="/list" method="get">
             <select name="order_by" id="order-input">
