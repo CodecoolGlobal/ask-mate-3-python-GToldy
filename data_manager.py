@@ -9,15 +9,16 @@ import util
 
 
 @database_common.connection_handler
-def add_new_question(cursor, question_details, image_file=''):
+def add_new_question(cursor, question_details, user_id, image_file=''):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO question
-        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s )
+        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time, 'view_n': 0,
-    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file})
+    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file,
+    'user_id': user_id})
 
 
 @database_common.connection_handler
@@ -155,39 +156,39 @@ def delete_question_by_id(cursor, question_id):
 
 
 @database_common.connection_handler
-def add_new_answer(cursor, question_details, question_id, image_file=''):
+def add_new_answer(cursor, question_details, question_id, user_id, image_file=''):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO answer
-        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s )
+        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time,
-    'vote_n': 0, 'question_id': question_id, 'message': question_details['message'], 'image': image_file})
+    'vote_n': 0, 'question_id': question_id, 'message': question_details['message'], 'image': image_file, 'user_id': user_id})
 
 
 @database_common.connection_handler
-def add_new_comment_to_question(cursor, comment, question_id):
+def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'question_id': question_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
 
 
 @database_common.connection_handler
-def add_new_comment_to_answer(cursor, comment, answer_id):
+def add_new_comment_to_answer(cursor, comment, answer_id, user_id):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'answer_id': answer_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
 
 
 
@@ -429,6 +430,15 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 
 @database_common.connection_handler
+def get_user_id_by_user_name(cursor, user_name):
+    query = """
+        SELECT user_id
+        FROM users
+        WHERE username = %(user_name)s
+        """
+    cursor.execute(query, {'user_name': user_name})
+    return cursor.fetchall()
+
 def get_question_vote_num(cursor, question_id):
     query = '''SELECT vote_number
                 FROM question
