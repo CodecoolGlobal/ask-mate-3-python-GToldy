@@ -57,6 +57,14 @@
                 <section class="answer-buttons">
                     <a class="edit-answer-button" href="/answer/{{ answer.id }}/edit">Edit answer</a>
                     <a class="add-comment-to-answer" href="/answer/{{ answer.id }}/new-comment"> {{ answer.message }} </a>
+
+                    {% if answer.accepted_state == false %}
+                        <form action="/answer/{{ answer.id }}/edit" method="post">
+                            <button name="unaccepted_state" value="true">Accept answer</button>
+                        </form>
+
+                    {% endif %}
+
                     {% if answer.accepted_state %}
                         <form action="/answer/{{ answer.id }}/edit" method="post">
                             <button name="unaccepted_state" value="false">Unaccept answer</button>
@@ -64,6 +72,9 @@
 
                     <h5>Accepted answer</h5>
                     {% endif %}
+
+
+
                 </section>
             </section>
             <section>
