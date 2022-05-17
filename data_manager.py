@@ -8,7 +8,6 @@ import datetime
 import util
 
 
-
 @database_common.connection_handler
 def add_new_question(cursor, question_details, image_file=''):
     submission_time = datetime.datetime.now()
@@ -19,7 +18,6 @@ def add_new_question(cursor, question_details, image_file=''):
         """
     cursor.execute(add, {'time': submission_time, 'view_n': 0,
     'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file})
-
 
 
 @database_common.connection_handler
@@ -401,6 +399,16 @@ def get_all_tags(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_all_tags_with_num(cursor):
+    query = '''SELECT tag.name, COUNT(question_id) AS q_num
+                FROM tag
+            LEFT JOIN question_tag qt on tag.id = qt.tag_id
+            GROUP BY id
+            ORDER BY tag.name'''
+    cursor.execute(query)
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):

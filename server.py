@@ -201,6 +201,12 @@ def delete_tag(question_id, tag_id):
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
+@app.route('/tags', methods=['GET', 'POST'])
+def tags_page():
+    tags = data_manager.get_all_tags_with_num()
+    return render_template('tags.html', tags=tags)
+
+  
 @app.route('/question/<question_id>/vote-up')
 def question_vote_up(question_id):
     vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
