@@ -2,12 +2,14 @@
 
 {% block content %}
 <nav id="edit-question-nav" class="navigation">
-    {% if question.title %}
-    <a id="edit-question-button" href="/question/{{ question.id }}/edit">Edit question</a>
+    {% if session.username %}
+        {% if question.title %}
+        <a id="edit-question-button" href="/question/{{ question.id }}/edit">Edit question</a>
+        {% endif %}
+        <form id="delete-form" action="/question/{{ question.id }}" method="POST">
+            <button id="delete-question-button" type="submit">Delete question</button>
+        </form>
     {% endif %}
-    <form id="delete-form" action="/question/{{ question.id }}" method="POST">
-        <button id="delete-question-button" type="submit">Delete question</button>
-    </form>
 </nav>
 <section id="question">
     <section id="question-body">
@@ -20,9 +22,12 @@
         {% endif %}
     </section>
     <footer id="question-footer">
+
         <section id="tag-section">
             <p><a id="all-tags-button" href="/tags">All tags</a></p>
-            <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
+            {% if session.username %}
+              <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
+            {% endif %}
             {% for tag in tag_list %}
                 <span class="tags">{{ tag.name }} <a class="delete-tag" href="/question/{{ question.id }}/tag/{{ tag.id }}/delete">x</a></span>
             {% endfor %}
@@ -40,7 +45,9 @@
             {% for comment in comments %}
             {% if comment.question_id == question.id%}
                 <li class="comment">
-                <a class="delete-comment" href="/comments/{{ comment.id }}/delete">x</a>
+                {% if session.username %}
+                    <a class="delete-comment" href="/comments/{{ comment.id }}/delete">x</a>
+                {% endif %}
                 <a id="edit-comment" href="/comment/{{ comment.id }}/edit"> {{ comment.message }} - Edited {{ comment.edited_count }} times. </a>
                 </li>
             {% endif %}
@@ -52,8 +59,10 @@
 </section>
 
 <section id="answers">
-    <a id="add-new-comment" href="/question/{{ question.id }}/new-comment">Add new comment</a>
-    <a id="add-answer-button" href="/question/{{ question.id }}/add-answer">Add new answer</a>
+    {% if session.username %}
+        <a id="add-new-comment" href="/question/{{ question.id }}/new-comment">Add new comment</a>
+        <a id="add-answer-button" href="/question/{{ question.id }}/add-answer">Add new answer</a>
+    {% endif %}
     <ul>
         {% if answer is not none %}
         {% for answer in answers %}
@@ -63,8 +72,12 @@
                 <p class="answer-image"><img src="/static/images/{{ answer.image }}"></p>
             {% endif %}
                 <section class="answer-buttons">
-                    <a class="edit-answer-button" href="/answer/{{ answer.id }}/edit">Edit answer</a>
-                    <a class="add-comment-to-answer" href="/answer/{{ answer.id }}/new-comment"> {{ answer.message }} </a>
+                    {% if session.username %}
+                        <a class="edit-answer-button" href="/answer/{{ answer.id }}/edit">Edit answer</a>
+                        <a class="add-comment-to-answer" href="/answer/{{ answer.id }}/new-comment"> {{ answer.message }} </a>
+                    {% else %}
+                        <p>{{ answer.message }}</p>
+                    {% endif %}
                 </section>
             </section>
             <section class="vote-buttons">
