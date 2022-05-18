@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+    <div calss="tag-list">
+    <h1>All tags:</h1>
+    {% for tag in tags %}
+        <span class="tags">{{ tag.name }}: {{ tag.q_num }}</span>
+    {% endfor %}
+    </div>
+    <br>
+
+{% endblock %}
