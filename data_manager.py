@@ -460,7 +460,7 @@ def get_answer_vote_num(cursor, answer_id):
 @database_common.connection_handler
 def update_question_vote_num(cursor, question_id, vote_number):
     query = '''UPDATE question
-                SET vote_number=%(vote_number)s
+                SET vote_number = %(vote_number)s
                 WHERE id=%(question_id)s'''
     cursor.execute(query, {'vote_number': vote_number, 'question_id': question_id})
 
@@ -468,6 +468,25 @@ def update_question_vote_num(cursor, question_id, vote_number):
 @database_common.connection_handler
 def update_answer_vote_num(cursor, answer_id, vote_number):
     query = '''UPDATE answer
-                SET vote_number=%(vote_number)s
+                SET vote_number = %(vote_number)s
                 WHERE id=%(answer_id)s'''
     cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def update_answer_acception_by_id(cursor, answer_id, accepted_state):
+    query = '''UPDATE answer
+                SET accepted_state = %(status)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id, 'status': accepted_state})
+
+
+@database_common.connection_handler
+def get_user_name_by_user_id(cursor, user_id):
+    query = """
+        SELECT username
+        FROM users
+        WHERE user_id = %(u_id)s
+        """
+    cursor.execute(query, {'u_id': user_id})
+    return cursor.fetchone()

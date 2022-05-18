@@ -38,11 +38,21 @@ def get_question_page(question_id):
     questions = data_manager.get_questions(question_id=question_id)[0]
     answers = data_manager.get_answers(question_id=question_id)
 
+    answer_owner = False
+
+
+    if 'username' in session and questions['user_id'] is not None:
+        user_name = data_manager.get_user_name_by_user_id(questions['user_id'])
+        if escape(session['username']) == user_name['username']:
+            answer_owner = True
+
+
     if request.method == 'POST':
         data_manager.delete_question_by_id(question_id)
         return redirect(url_for('list_questions'))
 
-    return render_template('question.html', question=questions, answers=answers, comments=comments, tag_list=question_tag)
+    return render_template('question.html', question=questions, answers=answers, comments=comments,
+            tag_list=question_tag, answer_owner=answer_owner)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -104,9 +114,13 @@ def update_question(question_id):
 def edit_answer(answer_id):
     answer = data_manager.get_answers_by_id(answer_id)
     question_id = answer['question_id']
+
+
+
     if request.method == 'POST':
-        if 'unaccepted_state' in request.form:
-            data_manager.update_answer_acception_by_id(answer_id, request.form['unaccepted_state'])
+        if 'accepted_state' in request.form:
+
+            data_manager.update_answer_acception_by_id(answer_id, request.form['accepted_state'])
 
             return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
