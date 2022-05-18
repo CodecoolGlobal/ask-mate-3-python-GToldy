@@ -27,6 +27,7 @@
         </form>
     </section>
 </nav>
+
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <section class="flash-messages">
@@ -36,9 +37,10 @@
         </section>
     {% endif %}
 {% endwith %}
-<ul>
+
+<ul id="question-list">
     {% for question in questions %}
-    <li><a href="/question/{{ question.id }}">{{ question.title }}</a></li>
+    <li><a href="/question/{{ question.id }}">{{ question.title }}</a> <snap class="vote-number">{{ question.vote_number }}</snap></li>
     {% endfor %}
 </ul>
 

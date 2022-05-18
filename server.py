@@ -1,4 +1,5 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session
+from flask import Flask, redirect, render_template, request, url_for, flash, session, escape, request
+
 import data_manager
 import os
 import time
@@ -8,6 +9,8 @@ from util import mark_search_word
 
 app = Flask(__name__)
 app.secret_key = util.generate_random_secret_key()
+
+app.secret_key = b'_5#y2LF4Q8z'
 
 
 @app.route('/')
@@ -44,29 +47,40 @@ def get_question_page(question_id):
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_new_question():
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
+
     if request.method == 'POST':
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_question(request.form, image_file)
+            data_manager.add_new_question(request.form, user_id, image_file)
         else:
-            data_manager.add_new_question(request.form)
+            data_manager.add_new_question(request.form, user_id)
         return redirect('list')
     return render_template('add-question.html', question=None)
 
 
 @app.route('/question/<question_id>/add-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     question = data_manager.get_question_by_id(question_id)
     if request.method == 'POST':
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_answer(request.form, question_id, image_file)
+            data_manager.add_new_answer(request.form, question_id, user_id, image_file)
         else:
-            data_manager.add_new_answer(request.form, question_id)
+            data_manager.add_new_answer(request.form, question_id, user_id)
         return redirect(url_for('get_question_page', question_id=question_id))
     return render_template('add-answer.html', question=question, answer=None)
 
@@ -106,8 +120,13 @@ def edit_answer(answer_id):
 def new_comment_to_question(question_id):
     where = "question"
 
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     if request.method == 'POST':
-        data_manager.add_new_comment_to_question(request.form, question_id)
+        data_manager.add_new_comment_to_question(request.form, question_id, user_id)
         return redirect(url_for('get_question_page', question_id=question_id))
 
     return render_template('new-comment.html', question_id=question_id, where=where)
@@ -116,9 +135,15 @@ def new_comment_to_question(question_id):
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
 def new_comment_to_answer(answer_id):
     where = "answer"
+
+    user_id = None
+
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+
     q_id = data_manager.get_question_id_by_answer_id(answer_id)
     if request.method == 'POST':
-        data_manager.add_new_comment_to_answer(request.form, answer_id)
+        data_manager.add_new_comment_to_answer(request.form, answer_id, user_id)
 
         return redirect(url_for('get_question_page', question_id=q_id))
 
@@ -236,6 +261,46 @@ def user_log_in():
 def user_log_out():
     session.pop('username', None)
     return redirect(url_for('list_questions'))
+
+
+@app.route('/tags', methods=['GET', 'POST'])
+def tags_page():
+    tags = data_manager.get_all_tags_with_num()
+    return render_template('tags.html', tags=tags)
+
+  
+@app.route('/question/<question_id>/vote-up')
+def question_vote_up(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num += 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/question/<question_id>/vote-down')
+def question_vote_down(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-up')
+def answer_vote_up(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num += 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-down')
+def answer_vote_down(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
 
 
 if __name__ == "__main__":

@@ -22,13 +22,22 @@
         {% endif %}
     </section>
     <footer id="question-footer">
-        {% for tag in tag_list %}
-            <span class="tags">{{ tag.name }} <a class="delete-tag" href="/question/{{ question.id }}/tag/{{ tag.id }}/delete">x</a></span>
-        {% endfor %}
-        {% if session.username %}
-            <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
-        {% endif %}
+
+        <section id="tag-section">
+            <p><a id="all-tags-button" href="/tags">All tags</a></p>
+            {% if session.username %}
+              <p><a class="new-tag" href="/question/{{ question.id }}/new-tag">Add tag</a></p>
+            {% endif %}
+            {% for tag in tag_list %}
+                <span class="tags">{{ tag.name }} <a class="delete-tag" href="/question/{{ question.id }}/tag/{{ tag.id }}/delete">x</a></span>
+            {% endfor %}
+        </section>
+        <section class="vote-buttons">
+            <a href="/question/{{ question.id}}/vote-down">-</a> <p>{{ question.vote_number }}</p> <a href="/question/{{ question.id}}/vote-up">+</a>
+        </section>
+
     </footer>
+
     <section>
         <p id="comments-text" >Comments for question:</p>
         <ul>
@@ -70,6 +79,9 @@
                         <p>{{ answer.message }}</p>
                     {% endif %}
                 </section>
+            </section>
+            <section class="vote-buttons">
+                <a href="/answer/{{ answer.id}}/vote-down">-</a> <p>{{ answer.vote_number }}</p> <a href="/answer/{{ answer.id}}/vote-up">+</a>
             </section>
             <section>
             {% if comments is not none %}
