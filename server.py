@@ -50,7 +50,7 @@ def add_new_question():
     user_id = None
 
     if 'username' in session:
-        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+        user_id = data_manager.get_user_id_by_user_name(session['username'])
 
 
     if request.method == 'POST':
@@ -58,9 +58,9 @@ def add_new_question():
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_question(request.form, user_id, image_file)
+            data_manager.add_new_question(request.form, user_id['user_id'], image_file)
         else:
-            data_manager.add_new_question(request.form, user_id)
+            data_manager.add_new_question(request.form, user_id['user_id'])
         return redirect('list')
     return render_template('add-question.html', question=None)
 
