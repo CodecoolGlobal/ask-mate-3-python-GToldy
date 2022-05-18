@@ -1,25 +1,18 @@
-from typing import List, Dict
-
-from psycopg2 import sql
-from psycopg2.extras import RealDictCursor
-
 import database_common
 import datetime
 import util
 
 
-
 @database_common.connection_handler
-def add_new_question(cursor, question_details, image_file=''):
+def add_new_question(cursor, question_details, user_id, image_file=''):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO question
-        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s )
+        VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s, %(user_id)s )
         """
-    cursor.execute(add, {'time': submission_time, 'view_n': 0,
-    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file})
-
+    cursor.execute(add, {'time': submission_time, 'view_n': 0, 'vote_n': 0, 'title': question_details['title'],
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id})
 
 
 @database_common.connection_handler
@@ -70,15 +63,14 @@ def get_answers(cursor, question_id=None):
 
 @database_common.connection_handler
 def update_question_by_id(cursor, question_details, question_id, image_file=''):
-
-
     update = """
         UPDATE question
         SET title = %(title)s, message = %(message)s, image = %(image)s 
         WHERE id = %(id_code)s
         """
-    cursor.execute(update, {'id_code': question_id, 'title': question_details['title'], 'message': question_details['message'],
-                         'image': image_file})
+    cursor.execute(update,
+                   {'id_code': question_id, 'title': question_details['title'], 'message': question_details['message'],
+                    'image': image_file})
 
 
 @database_common.connection_handler
@@ -89,7 +81,6 @@ def delete_answer_by_question_id(cursor, question_id):
         for i in ans.values():
             delete_comment_by_answer_id(i)
 
-
     delete = """
         DELETE FROM answer
         WHERE question_id = %(id_code)s
@@ -99,7 +90,6 @@ def delete_answer_by_question_id(cursor, question_id):
 
 @database_common.connection_handler
 def delete_comment_by_answer_id(cursor, question_id):
-
     delete = """
         DELETE FROM comment
         WHERE answer_id = %(id_code)s
@@ -109,7 +99,6 @@ def delete_comment_by_answer_id(cursor, question_id):
 
 @database_common.connection_handler
 def delete_comment_by_id(cursor, comment_id):
-
     delete = """
         DELETE FROM comment
         WHERE id = %(id_code)s
@@ -117,10 +106,8 @@ def delete_comment_by_id(cursor, comment_id):
     cursor.execute(delete, {'id_code': comment_id})
 
 
-
 @database_common.connection_handler
 def delete_comment_by_question_id(cursor, question_id):
-
     delete = """
         DELETE FROM comment
         WHERE question_id = %(id_code)s
@@ -154,43 +141,41 @@ def delete_question_by_id(cursor, question_id):
     cursor.execute(delete, {'id_code': question_id})
 
 
-
-
 @database_common.connection_handler
-def add_new_answer(cursor, question_details, question_id, image_file=''):
+def add_new_answer(cursor, question_details, question_id, user_id, image_file=''):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO answer
-        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s )
+        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
         """
-    cursor.execute(add, {'time': submission_time,
-    'vote_n': 0, 'question_id': question_id, 'message': question_details['message'], 'image': image_file})
+    cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
-def add_new_comment_to_question(cursor, comment, question_id):
+def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
+
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'question_id': question_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
-def add_new_comment_to_answer(cursor, comment, answer_id):
+def add_new_comment_to_answer(cursor, comment, answer_id, user_id):
     submission_time = datetime.datetime.now()
 
     add = """
         INSERT INTO comment
-        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s )
+        VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'answer_id': answer_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0})
-
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
@@ -255,6 +240,7 @@ def get_question_id_by_answer_id(cursor, answer_id):
         for i in ans.values():
             q_id = i
 
+
     return q_id
 
 
@@ -279,8 +265,6 @@ def get_comment_by_id(cursor, comment_id):
     return cursor.fetchall()
 
 
-
-
 @database_common.connection_handler
 def get_comments_by_question_id(cursor, question_id):
     query = """
@@ -290,8 +274,6 @@ def get_comments_by_question_id(cursor, question_id):
         """
     cursor.execute(query, {'id_code': question_id})
     return cursor.fetchall()
-
-
 
 
 @database_common.connection_handler
@@ -304,7 +286,7 @@ def get_answers_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def update_answers_by_id(cursor, answer_detail, answer_id, image_file):
+def update_answers_by_id(cursor, answer_detail, answer_id, image_file=''):
     update = """
             UPDATE answer
             SET  message = %(message)s, image = %(image)s 
@@ -330,9 +312,9 @@ def get_comment_edited_count_by_id(cursor, comment_id):
 
     return number
 
+
 @database_common.connection_handler
 def update_comment(cursor, comment, comment_id):
-
     number = get_comment_edited_count_by_id(comment_id) + 1
     submission_time = datetime.datetime.now()
 
@@ -342,7 +324,7 @@ def update_comment(cursor, comment, comment_id):
         WHERE id = %(c_id)s
         """
     cursor.execute(update, {'message': comment['comment'],
-                         'time': submission_time, 'edited_c': number, 'c_id': comment_id})
+                            'time': submission_time, 'edited_c': number, 'c_id': comment_id})
 
 
 @database_common.connection_handler
@@ -403,8 +385,18 @@ def get_all_tags(cursor):
 
 
 @database_common.connection_handler
+def get_all_tags_with_num(cursor):
+    query = '''SELECT tag.name, COUNT(question_id) AS q_num
+                FROM tag
+            LEFT JOIN question_tag qt on tag.id = qt.tag_id
+            GROUP BY tag.id
+            ORDER BY tag.name'''
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):
-    query = '''SELECT name, id
+    query = '''SELECT name, question_id
             FROM tag
             INNER JOIN question_tag on tag.id = question_tag.tag_id
             WHERE question_id=%(question_id)s'''
@@ -446,6 +438,85 @@ def get_specific_user(cursor, user_id):
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
+    
+@database_common.connection_handler
+def add_new_user(cursor, username, email, password):
+    registration_time = datetime.datetime.now()
+    query = "INSERT INTO users " \
+            "VALUES (DEFAULT, %(username)s, %(email)s, %(password)s, %(registration_time)s)"
+    cursor.execute(query, {'username': username, 'email': email, 'password': password, 'registration_time': registration_time})
+
+
+@database_common.connection_handler
+def get_user_by_detail(cursor, user_login):
+    username, email = user_login
+    query = "SELECT * FROM users WHERE email = %(email)s OR username = %(username)s"
+    cursor.execute(query, {'username': username, 'email': email})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_id_by_user_name(cursor, user_name):
+    query = """
+        SELECT user_id
+        FROM users
+        WHERE username = %(user_name)s
+        """
+    cursor.execute(query, {'user_name': user_name})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_question_vote_num(cursor, question_id):
+    query = '''SELECT vote_number
+                FROM question
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_answer_vote_num(cursor, answer_id):
+    query = '''SELECT vote_number
+                FROM answer
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_question_vote_num(cursor, question_id, vote_number):
+    query = '''UPDATE question
+                SET vote_number = %(vote_number)s
+                WHERE id=%(question_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_answer_vote_num(cursor, answer_id, vote_number):
+    query = '''UPDATE answer
+                SET vote_number = %(vote_number)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def update_answer_acception_by_id(cursor, answer_id, accepted_state):
+    query = '''UPDATE answer
+                SET accepted_state = %(status)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_users_rep_num_for_A(cursor, answer_id):
+    query = '''SELECT reputation_number, users.user_id
+                FROM users
+                LEFT JOIN answer a on users.user_id = a.user_id
+                WHERE a.id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
 
 @database_common.connection_handler
 def get_user_relations(cursor, user_id):
@@ -465,4 +536,33 @@ def get_user_relations(cursor, user_id):
                WHERE users.user_id = %(user_id)s
                GROUP BY date, users.username, users.user_id, question.message, answer.message, comment.message'''
     cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+  
+@database_common.connection_handler
+def get_users_rep_num_for_Q(cursor, question_id):
+    query = '''SELECT reputation_number, users.user_id
+                FROM users
+                LEFT JOIN question q on users.user_id = q.user_id
+                WHERE q.id=%(question_id)s'''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_users_rep_num(cursor, reputation_number, user_id):
+    query = '''UPDATE users
+                SET reputation_number=%(reputation_number)s
+                WHERE user_id=%(user_id)s'''
+    cursor.execute(query, {'reputation_number': reputation_number, 'user_id': user_id})
+
+
+@database_common.connection_handler
+def get_user_name_by_user_id(cursor, user_id):
+    query = """
+        SELECT username
+        FROM users
+        WHERE user_id = %(u_id)s
+        """
+    cursor.execute(query, {'u_id': user_id})
     return cursor.fetchone()
