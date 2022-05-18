@@ -295,6 +295,7 @@ mark {
     border-radius: 0.5rem;
     font-weight: 900;
     letter-spacing: 1px;
+    display:inline-block;
 }
 
 .new-tag {
@@ -338,3 +339,4 @@ li snap {
 #question-list a {
     padding-right: 1rem;
 }
+
