@@ -12,9 +12,11 @@
 <body>
     <header>
         <h1>Ghostbusters online hotline</h1>
+
         <nav>
             {% if session.username %}
                 <p id="logged-user">{{ session.username }}</p>
+                <a href="/users">Users</a>
             {% endif %}
             <ul>
                 {% if session.username %}
@@ -27,7 +29,9 @@
                 {% endif %}
             </ul>
         </nav>
+
         <img src="/static/images/gblogo.png" alt="Can not load image">
+
     </header>
     <section>
         {% block content %}{% endblock %}

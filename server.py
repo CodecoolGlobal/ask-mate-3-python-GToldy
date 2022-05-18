@@ -3,6 +3,7 @@ from flask import Flask, redirect, render_template, request, url_for, flash, ses
 import data_manager
 import os
 import time
+from datetime import datetime
 
 import util
 from util import mark_search_word
@@ -244,6 +245,20 @@ def add_new_tag(question_id):
 def delete_tag(question_id, tag_id):
     data_manager.delete_tag_from_question_tags(question_id, tag_id)
     return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/users')
+def users_list():
+    users = data_manager.get_all_users()
+    return render_template('users.html', users=users)
+
+
+@app.route('/users/<user_id>')
+def user_page(user_id):
+    user = data_manager.get_specific_user(user_id)
+    user_relations = data_manager.get_user_relations(user_id)
+
+    return render_template('user.html', user=user, user_relations=user_relations)
 
 
 @app.route('/registration', methods=['GET', 'POST'])
