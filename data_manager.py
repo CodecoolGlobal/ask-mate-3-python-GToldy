@@ -11,11 +11,8 @@ def add_new_question(cursor, question_details, user_id, image_file=''):
         INSERT INTO question
         VALUES(DEFAULT, %(time)s, %(view_n)s, %(vote_n)s, %(title)s, %(message)s, %(image)s, %(user_id)s )
         """
-    cursor.execute(add, {'time': submission_time, 'view_n': 0,
-                         'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'],
-                         'image': image_file})
-    'vote_n': 0, 'title': question_details['title'], 'message': question_details['message'], 'image': image_file,
-    'user_id': user_id})
+    cursor.execute(add, {'time': submission_time, 'view_n': 0, 'vote_n': 0, 'title': question_details['title'],
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id})
 
 
 @database_common.connection_handler
@@ -152,10 +149,8 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
         INSERT INTO answer
         VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
         """
-    cursor.execute(add, {'time': submission_time,
-                         'vote_n': 0, 'question_id': question_id, 'message': question_details['message'],
-                         'image': image_file})
-    'vote_n': 0, 'question_id': question_id, 'message': question_details['message'], 'image': image_file, 'user_id': user_id})
+    cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id})
 
 
 @database_common.connection_handler
@@ -399,7 +394,7 @@ def get_all_tags_with_num(cursor):
 
 @database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):
-    query = '''SELECT name, id
+    query = '''SELECT name, question_id
             FROM tag
             INNER JOIN question_tag on tag.id = question_tag.tag_id
             WHERE question_id=%(question_id)s'''

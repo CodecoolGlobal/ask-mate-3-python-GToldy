@@ -1,6 +1,5 @@
 import os
 import random
-
 import bcrypt
 import data_manager
 import string
