@@ -150,19 +150,20 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
         VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
-                         'message': question_details['message'], 'image': image_file, 'user_id': user_id})
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
 def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
 
+
     add = """
         INSERT INTO comment
         VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'question_id': question_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
@@ -174,7 +175,7 @@ def add_new_comment_to_answer(cursor, comment, answer_id, user_id):
         VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'answer_id': answer_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
@@ -284,7 +285,7 @@ def get_answers_by_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def update_answers_by_id(cursor, answer_detail, answer_id, image_file):
+def update_answers_by_id(cursor, answer_detail, answer_id, image_file=''):
     update = """
             UPDATE answer
             SET  message = %(message)s, image = %(image)s 
@@ -425,8 +426,8 @@ def get_user_by_detail(cursor, user_login):
     cursor.execute(query, {'username': username, 'email': email})
     return cursor.fetchone()
 
-  
-@database_common.connection_handler  
+
+@database_common.connection_handler
 def get_user_id_by_user_name(cursor, user_name):
     query = """
         SELECT user_id
@@ -434,7 +435,7 @@ def get_user_id_by_user_name(cursor, user_name):
         WHERE username = %(user_name)s
         """
     cursor.execute(query, {'user_name': user_name})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
@@ -458,7 +459,7 @@ def get_answer_vote_num(cursor, answer_id):
 @database_common.connection_handler
 def update_question_vote_num(cursor, question_id, vote_number):
     query = '''UPDATE question
-                SET vote_number=%(vote_number)s
+                SET vote_number = %(vote_number)s
                 WHERE id=%(question_id)s'''
     cursor.execute(query, {'vote_number': vote_number, 'question_id': question_id})
 
@@ -466,9 +467,28 @@ def update_question_vote_num(cursor, question_id, vote_number):
 @database_common.connection_handler
 def update_answer_vote_num(cursor, answer_id, vote_number):
     query = '''UPDATE answer
-                SET vote_number=%(vote_number)s
+                SET vote_number = %(vote_number)s
                 WHERE id=%(answer_id)s'''
     cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def update_answer_acception_by_id(cursor, answer_id, accepted_state):
+    query = '''UPDATE answer
+                SET accepted_state = %(status)s
+                WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id, 'status': accepted_state})
+
+
+@database_common.connection_handler
+def get_user_name_by_user_id(cursor, user_id):
+    query = """
+        SELECT username
+        FROM users
+        WHERE user_id = %(u_id)s
+        """
+    cursor.execute(query, {'u_id': user_id})
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
