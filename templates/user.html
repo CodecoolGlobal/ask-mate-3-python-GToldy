@@ -2,28 +2,26 @@
 
 {% block content %}
 <section>
-
-
-{#        <table>#}
-{#            <tr>#}
-{#                <th>User ID</th>#}
-{#                <th>Username</th>#}
-{#                <th>Registration date</th>#}
-{#                <th>Number of asked questions</th>#}
-{#                <th>Number of answers</th>#}
-{#                <th>Number of comments</th>#}
-{#                <th>Reputation</th>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <td>{{ user.user_id }}</td>#}
-{#                <td>{{ user.username }}</td>#}
-{#                <td>{{ user.date }}</td>#}
-{#                <td>{{ user.question_count }}</td>#}
-{#                <td>{{ user.answer_count }}</td>#}
-{#                <td>{{ user.comment_count }}</td>#}
-{#                <td></td>#}
-{#            </tr>#}
-{#        </table>#}
+    <ul>
+        <li>
+            User ID: {{ user.user_id }}
+        </li>
+        <li>
+            Username: {{ user.username }}
+        </li>
+        <li>
+            Registration date: {{ user.date }}
+        </li>
+        <li>
+            Questions : {{ user_relations.question_count }}
+        </li>
+        <li>
+            Answers: {{ user_relations.answer_count }}
+        </li>
+        <li>
+            Comments: {{ user_relations.comment_count }}
+        </li>
+    </ul>
 </section>
 
 {% endblock %}

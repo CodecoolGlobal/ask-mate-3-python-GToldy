@@ -211,7 +211,8 @@ def users_list():
 @app.route('/users/<user_id>')
 def user_page(user_id):
     user = data_manager.get_specific_user(user_id)
-    return render_template('user.html', user=user)
+    user_relations = data_manager.get_user_relations(user_id)
+    return render_template('user.html', user=user, user_relations=user_relations)
 
 
 if __name__ == "__main__":

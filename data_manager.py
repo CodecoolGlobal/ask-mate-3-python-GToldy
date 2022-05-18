@@ -436,13 +436,20 @@ def get_all_users(cursor):
 
 @database_common.connection_handler
 def get_specific_user(cursor, user_id):
-    query = ''' SELECT users.username, users.user_id, users.registration_date AS date
+    query = ''' SELECT users.username, users.user_id, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date
         FROM users 
         WHERE user_id = %(user_id)s'''
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
 
-@database_common.connection_handler
 def get_user_relations(cursor, user_id):
-    query = '''SELECT question.title'''
+    query = '''SELECT COUNT(question.id) AS question_count,
+    COUNT(answer.id) AS  answer_count, COUNT(comment.id) AS comment_count
+    FROM users
+    LEFT JOIN answer ON users.user_id = answer.question_id
+    LEFT JOIN comment ON users.user_id = comment.answer_id
+    LEFT JOIN question ON users.user_id = question.id
+    WHERE users.user_id = %(user_id)s'''
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
