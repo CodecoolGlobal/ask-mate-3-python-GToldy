@@ -422,16 +422,20 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_all_users(cursor):
-    query = "SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date, " \
-            "COUNT(question.id) AS question_count, COUNT(answer.id) AS  answer_count, " \
-            "COUNT(comment.id) AS comment_count " \
-            "FROM users " \
-            "LEFT JOIN question ON users.user_id=question.user_id " \
-            "LEFT JOIN answer ON question.id = answer.question_id " \
-            "LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id " \
-            "GROUP BY date, users.username, users.user_id "
+    query = '''SELECT users.user_id, users.username,
+                SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date,
+                COUNT(question.id) AS question_count,
+                COUNT(answer.question_id) AS answer_count,
+                COUNT(comment.id) AS comment_count
+                FROM users
+                LEFT JOIN question ON users.user_id=question.user_id
+                LEFT JOIN answer ON users.user_id = answer.question_id
+                LEFT JOIN comment ON users.user_id = comment.answer_id OR comment.question_id=question.id 
+                GROUP BY users.user_id'''
     cursor.execute(query)
     return cursor.fetchall()
+
+# date, users.username, users.user_id, question.message, answer.message, comment.message
 
 
 @database_common.connection_handler
@@ -445,13 +449,20 @@ def get_specific_user(cursor, user_id):
 
 @database_common.connection_handler
 def get_user_relations(cursor, user_id):
-    query = '''SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,COUNT(question.id) AS question_count,
-    COUNT(answer.id) AS  answer_count, COUNT(comment.id) AS comment_count
-    FROM users
-    LEFT JOIN question ON users.user_id=question.user_id
-    LEFT JOIN answer ON question.id = answer.question_id
-    LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
-    WHERE users.user_id = %(user_id)s
-    GROUP BY date, users.username, users.user_id'''
+    query = '''SELECT users.user_id, 
+               users.username,
+               SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,
+               COUNT(question.id) AS question_count,
+               COUNT(answer.id) AS  answer_count, 
+               COUNT(comment.id) AS comment_count,
+               question.message AS questions,
+               answer.message AS messages,
+               comment.message AS comments
+               FROM users
+               LEFT JOIN question ON users.user_id=question.user_id
+               LEFT JOIN answer ON question.id = answer.question_id
+               LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
+               WHERE users.user_id = %(user_id)s
+               GROUP BY date, users.username, users.user_id, question.message, answer.message, comment.message'''
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()

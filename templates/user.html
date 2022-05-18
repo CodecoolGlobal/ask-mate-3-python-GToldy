@@ -23,5 +23,27 @@
         </li>
     </ul>
 </section>
+<section>
+    <table>
+        <tr>
+            <th>Questions</th>
+            <th>Answers</th>
+            <th>Comments</th>
+        </tr>
+        <tr>
+
+                <th>
+                        {{ user_relations.questions }}
+                </th>
+
+                <th>
+                        {{ user_relations.messages }}
+                </th>
+                <th>
+                        {{ user_relations.comments }}
+                </th>
+        </tr>
+    </table>
+</section>
 
 {% endblock %}
