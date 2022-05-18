@@ -441,3 +441,8 @@ def get_specific_user(cursor, user_id):
         WHERE user_id = %(user_id)s'''
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_relations(cursor, user_id):
+    query = '''SELECT question.title'''
