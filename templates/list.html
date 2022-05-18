@@ -2,7 +2,9 @@
 
 {% block content %}
 <nav class="navigation">
-    <a id="add-question-button" href="/add-question">Add new question</a>
+    {% if session.username %}
+        <a id="add-question-button" href="/add-question">Add new question</a>
+    {% endif %}
     <section style="display: flex; justify-content: space-between; width: 100%">
         <form action="/list" method="get">
             <select name="order_by" id="order-input">
@@ -25,9 +27,20 @@
         </form>
     </section>
 </nav>
-<ul>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <section class="flash-messages">
+            {% for category, message in messages %}
+                <span class="flash-{{ category }}">{{ message }}</span>
+            {% endfor %}
+        </section>
+    {% endif %}
+{% endwith %}
+
+<ul id="question-list">
     {% for question in questions %}
-    <li><a href="/question/{{ question.id }}">{{ question.title }}</a></li>
+    <li><a href="/question/{{ question.id }}">{{ question.title }}</a> <snap class="vote-number">{{ question.vote_number }}</snap></li>
     {% endfor %}
 </ul>
 

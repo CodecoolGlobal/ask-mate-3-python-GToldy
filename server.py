@@ -1,11 +1,14 @@
-from flask import Flask, redirect, render_template, request, url_for, session, escape, request
+from flask import Flask, redirect, render_template, request, url_for, flash, session, escape, request
+
 import data_manager
 import os
 import time
 
+import util
 from util import mark_search_word
 
 app = Flask(__name__)
+app.secret_key = util.generate_random_secret_key()
 
 app.secret_key = b'_5#y2LF4Q8z'
 
@@ -36,7 +39,7 @@ def get_question_page(question_id):
     answers = data_manager.get_answers(question_id=question_id)
 
     if request.method == 'POST':
-        data_manager.delete_question_by_id(question_id)  # Törlésre át kell adni a képet majd.
+        data_manager.delete_question_by_id(question_id)
         return redirect(url_for('list_questions'))
 
     return render_template('question.html', question=questions, answers=answers, comments=comments, tag_list=question_tag)
@@ -47,7 +50,7 @@ def add_new_question():
     user_id = None
 
     if 'username' in session:
-        user_id = data_manager.get_user_id_by_user_name(escape(session['username']))
+        user_id = data_manager.get_user_id_by_user_name(session['username'])
 
 
     if request.method == 'POST':
@@ -55,9 +58,9 @@ def add_new_question():
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
             image.save(os.path.join(os.environ.get('IMAGE_PATH'), image_file))
-            data_manager.add_new_question(request.form, user_id, image_file)
+            data_manager.add_new_question(request.form, user_id['user_id'], image_file)
         else:
-            data_manager.add_new_question(request.form, user_id)
+            data_manager.add_new_question(request.form, user_id['user_id'])
         return redirect('list')
     return render_template('add-question.html', question=None)
 
@@ -226,6 +229,81 @@ def add_new_tag(question_id):
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
 def delete_tag(question_id, tag_id):
     data_manager.delete_tag_from_question_tags(question_id, tag_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def user_registration():
+    if request.method == 'POST':
+        is_verified, user, flash_massage = util.verify_registration_details(request.form)
+        if is_verified:
+            username, email, password = user
+            data_manager.add_new_user(username, email, password)
+            flash(flash_massage, 'info')
+            return redirect(url_for('list_questions'))
+        else:
+            flash(flash_massage, 'error')
+            return redirect(url_for('user_registration'))
+    return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def user_log_in():
+    if request.method == 'POST':
+        is_verified, username, flash_message = util.verify_log_in_details(request.form)
+        if is_verified:
+            session['username'] = username
+            flash(flash_message, 'info')
+            return redirect(url_for('list_questions'))
+        else:
+            flash(flash_message, 'error')
+            return redirect(url_for('user_log_in'))
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def user_log_out():
+    session.pop('username', None)
+    return redirect(url_for('list_questions'))
+
+
+@app.route('/tags', methods=['GET', 'POST'])
+def tags_page():
+    tags = data_manager.get_all_tags_with_num()
+    return render_template('tags.html', tags=tags)
+
+  
+@app.route('/question/<question_id>/vote-up')
+def question_vote_up(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num += 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/question/<question_id>/vote-down')
+def question_vote_down(question_id):
+    vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_question_vote_num(question_id, vote_num)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-up')
+def answer_vote_up(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num += 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
+@app.route('/answer/<answer_id>/vote-down')
+def answer_vote_down(answer_id):
+    vote_num = data_manager.get_answer_vote_num(answer_id)['vote_number']
+    vote_num -= 1
+    data_manager.update_answer_vote_num(answer_id, vote_num)
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
