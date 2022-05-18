@@ -212,6 +212,7 @@ def users_list():
 def user_page(user_id):
     user = data_manager.get_specific_user(user_id)
     user_relations = data_manager.get_user_relations(user_id)
+
     return render_template('user.html', user=user, user_relations=user_relations)
 
 

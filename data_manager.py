@@ -443,13 +443,15 @@ def get_specific_user(cursor, user_id):
     return cursor.fetchone()
 
 
+@database_common.connection_handler
 def get_user_relations(cursor, user_id):
-    query = '''SELECT COUNT(question.id) AS question_count,
+    query = '''SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,COUNT(question.id) AS question_count,
     COUNT(answer.id) AS  answer_count, COUNT(comment.id) AS comment_count
     FROM users
-    LEFT JOIN answer ON users.user_id = answer.question_id
-    LEFT JOIN comment ON users.user_id = comment.answer_id
-    LEFT JOIN question ON users.user_id = question.id
-    WHERE users.user_id = %(user_id)s'''
+    LEFT JOIN question ON users.user_id=question.user_id
+    LEFT JOIN answer ON question.id = answer.question_id
+    LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
+    WHERE users.user_id = %(user_id)s
+    GROUP BY date, users.username, users.user_id'''
     cursor.execute(query, {'user_id': user_id})
-    return cursor.fetchall()
+    return cursor.fetchone()
