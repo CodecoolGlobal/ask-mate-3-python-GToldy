@@ -518,3 +518,13 @@ def update_users_rep_num(cursor, reputation_number, user_id):
                 WHERE user_id=%(user_id)s'''
     cursor.execute(query, {'reputation_number': reputation_number, 'user_id': user_id})
 
+
+@database_common.connection_handler
+def get_user_name_by_user_id(cursor, user_id):
+    query = """
+        SELECT username
+        FROM users
+        WHERE user_id = %(u_id)s
+        """
+    cursor.execute(query, {'u_id': user_id})
+    return cursor.fetchone()
