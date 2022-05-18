@@ -387,7 +387,7 @@ def get_all_tags_with_num(cursor):
     query = '''SELECT tag.name, COUNT(question_id) AS q_num
                 FROM tag
             LEFT JOIN question_tag qt on tag.id = qt.tag_id
-            GROUP BY id
+            GROUP BY tag.id
             ORDER BY tag.name'''
     cursor.execute(query)
     return cursor.fetchall()
@@ -469,3 +469,32 @@ def update_answer_vote_num(cursor, answer_id, vote_number):
                 SET vote_number=%(vote_number)s
                 WHERE id=%(answer_id)s'''
     cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def get_users_rep_num_for_A(cursor, answer_id):
+    query = '''SELECT reputation_number, users.user_id
+                FROM users
+                LEFT JOIN answer a on users.user_id = a.user_id
+                WHERE a.id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_users_rep_num_for_Q(cursor, question_id):
+    query = '''SELECT reputation_number, users.user_id
+                FROM users
+                LEFT JOIN question q on users.user_id = q.user_id
+                WHERE q.id=%(question_id)s'''
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def update_users_rep_num(cursor, reputation_number, user_id):
+    query = '''UPDATE users
+                SET reputation_number=%(reputation_number)s
+                WHERE user_id=%(user_id)s'''
+    cursor.execute(query, {'reputation_number': reputation_number, 'user_id': user_id})
+

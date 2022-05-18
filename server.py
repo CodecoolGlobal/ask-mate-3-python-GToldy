@@ -274,6 +274,11 @@ def question_vote_up(question_id):
     vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
     vote_num += 1
     data_manager.update_question_vote_num(question_id, vote_num)
+    user_data = data_manager.get_users_rep_num_for_Q(question_id)
+    rep_num = user_data['reputation_number']
+    user_id = user_data['user_id']
+    rep_num += 5
+    data_manager.update_users_rep_num(rep_num, user_id)
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
@@ -282,6 +287,11 @@ def question_vote_down(question_id):
     vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
     vote_num -= 1
     data_manager.update_question_vote_num(question_id, vote_num)
+    user_data = data_manager.get_users_rep_num_for_Q(question_id)
+    rep_num = user_data['reputation_number']
+    user_id = user_data['user_id']
+    rep_num -= 2
+    data_manager.update_users_rep_num(rep_num, user_id)
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
@@ -291,6 +301,11 @@ def answer_vote_up(answer_id):
     vote_num += 1
     data_manager.update_answer_vote_num(answer_id, vote_num)
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    user_data = data_manager.get_users_rep_num_for_A(answer_id)
+    rep_num = user_data['reputation_number']
+    user_id = user_data['user_id']
+    rep_num += 10
+    data_manager.update_users_rep_num(rep_num, user_id)
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
@@ -300,6 +315,11 @@ def answer_vote_down(answer_id):
     vote_num -= 1
     data_manager.update_answer_vote_num(answer_id, vote_num)
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    user_data = data_manager.get_users_rep_num_for_A(answer_id)
+    rep_num = user_data['reputation_number']
+    user_id = user_data['user_id']
+    rep_num -= 2
+    data_manager.update_users_rep_num(rep_num, user_id)
     return redirect(url_for('get_question_page', question_id=question_id))
 
 
