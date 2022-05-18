@@ -150,19 +150,20 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
         VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
-                         'message': question_details['message'], 'image': image_file, 'user_id': user_id})
+                         'message': question_details['message'], 'image': image_file, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
 def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
 
+
     add = """
         INSERT INTO comment
         VALUES(DEFAULT, %(question_id)s, NULL,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'question_id': question_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
@@ -174,7 +175,7 @@ def add_new_comment_to_answer(cursor, comment, answer_id, user_id):
         VALUES(DEFAULT, NULL, %(answer_id)s,  %(message)s, %(time)s, %(edited_c)s, %(user_id)s )
         """
     cursor.execute(add, {'answer_id': answer_id, 'message': comment['comment'],
-                         'time': submission_time, 'edited_c': 0, 'user_id': user_id})
+                         'time': submission_time, 'edited_c': 0, 'user_id': user_id['user_id']})
 
 
 @database_common.connection_handler
@@ -238,6 +239,7 @@ def get_question_id_by_answer_id(cursor, answer_id):
     for ans in answer:
         for i in ans.values():
             q_id = i
+
 
     return q_id
 
@@ -434,7 +436,7 @@ def get_user_id_by_user_name(cursor, user_name):
         WHERE username = %(user_name)s
         """
     cursor.execute(query, {'user_name': user_name})
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 
 @database_common.connection_handler
