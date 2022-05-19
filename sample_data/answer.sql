@@ -1,7 +1,0 @@
-UPDATE public.answer SET submission_time = '2022-05-05 23:04:50.665110', vote_number = 0, question_id = 2, message = 'You shouldn''t hope for anything bad. Those dolls can be real evils.', image = '1651784690.6490138_doll.jpeg' WHERE id = 4;
-UPDATE public.answer SET submission_time = '2017-04-28 16:49:00.000000', vote_number = 4, question_id = 1, message = 'Ghostbusters!!', image = null WHERE id = 1;
-UPDATE public.answer SET submission_time = '2022-05-05 22:32:01.737203', vote_number = 0, question_id = 0, message = 'You got ghosted!', image = '1651782721.7217128_1651780868.2889256_Layer 1_sprite_2.png' WHERE id = 3;
-UPDATE public.answer SET submission_time = '2017-04-25 14:42:00.000000', vote_number = 35, question_id = 1, message = 'The Wincester brothers. There is Dean''s number: 1-245-4976285.', image = '' WHERE id = 2;
-UPDATE public.answer SET submission_time = '2022-05-05 23:15:15.265504', vote_number = 0, question_id = 0, message = 'Bro, you should move out immediately!!', image = '' WHERE id = 5;
-UPDATE public.answer SET submission_time = '2022-05-06 07:32:43.533734', vote_number = 0, question_id = 4, message = 'You got ghosted! ', image = '1651815187.0665932_1651782721.7217128_1651780868.2889256_Layer 1_sprite_2.png' WHERE id = 6;
-UPDATE public.answer SET submission_time = '2022-05-06 07:56:29.438711', vote_number = 0, question_id = 6, message = 'Any pin is good ;)', image = '' WHERE id = 7;

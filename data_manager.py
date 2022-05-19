@@ -599,7 +599,8 @@ def get_comment_id_by_answer_id(cursor, answer_id):
 @database_common.connection_handler
 def delete_answer(cursor, answer_id):
     a_id = get_comment_id_by_answer_id(answer_id)
-    delete_comment_by_id(a_id['id'])
+    if a_id is not None:
+        delete_comment_by_id(a_id['id'])
     query = '''DELETE
             FROM answer
             WHERE id=%(answer_id)s'''
