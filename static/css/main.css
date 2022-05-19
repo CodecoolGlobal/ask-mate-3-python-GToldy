@@ -108,6 +108,12 @@ form {
     align-items: flex-start;
 }
 
+#edit-question-nav {
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:flex-end
+}
+
 .navigation form{
     width: auto;
     margin: 0;
@@ -148,6 +154,9 @@ ul {
 
 #delete-form {
     margin:0;
+    display:flex;
+    justify-content:flex-end;
+    
 }
 
 .edit-answer-button, .delete-comment {
@@ -186,10 +195,6 @@ ul {
     background: none;
     font-size: 65%;
     letter-spacing: 1px;
-    display: flex;
-    position: absolute;
-    right: -45%;
-    width: 70vw;
 }
 
 #question {
@@ -423,4 +428,9 @@ footer {
     font-weight: bold;
     letter-spacing: 1px;
     margin: 1rem 0 .5rem;
+}
+
+.indent {
+    width: 48vw;
+    background:#1e4896
 }
