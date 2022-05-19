@@ -385,3 +385,10 @@ li snap {
 footer {
     margin: 1rem 0;
 }
+
+#login-header {
+    color: white;
+    text-align: center;
+    font-weight: 0;
+    letter-spacing: .5px
+}

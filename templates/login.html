@@ -11,6 +11,8 @@
         {% endif %}
     {% endwith %}
 
+    <h3 id="login-header">Log in with email or username:</h3>
+
     <form action="{{ url_for('user_log_in') }}" method="POST">
         <div class="form-input">
             <label for="username-input">Username</label>
@@ -27,6 +29,6 @@
             <input type="password" id="password-input" name="password">
         </div>
 
-        <button type="submit">Sign up</button>
+        <button type="submit">Log in</button>
     </form>
 {% endblock %}
