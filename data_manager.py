@@ -565,3 +565,11 @@ def get_user_name_by_user_id(cursor, user_id):
         """
     cursor.execute(query, {'u_id': user_id})
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+    query = '''DELETE
+            FROM answer
+            WHERE id=%(answer_id)s'''
+    cursor.execute(query, {'answer_id': answer_id})

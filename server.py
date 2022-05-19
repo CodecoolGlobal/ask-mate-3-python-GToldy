@@ -11,8 +11,6 @@ from util import mark_search_word
 app = Flask(__name__)
 app.secret_key = util.generate_random_secret_key()
 
-app.secret_key = b'_5#y2LF4Q8z'
-
 
 @app.route('/')
 def latest_5_questions():
@@ -42,8 +40,11 @@ def get_question_page(question_id):
     answer_owner = False
 
     if 'username' in session and questions['user_id'] is not None:
+
         user_name = data_manager.get_user_name_by_user_id(questions['user_id'])
-        if escape(session['username']) == user_name['username']:
+
+        if user_name is not None and escape(session['username']) == user_name['username']:
+
             answer_owner = True
 
     if request.method == 'POST':
@@ -141,6 +142,13 @@ def edit_answer(answer_id):
             data_manager.update_answers_by_id(request.form, answer_id)
         return redirect(url_for('get_question_page', question_id=question_id))
     return render_template('add-answer.html', answer=answer)
+
+
+@app.route('/answer/<answer_id>/delete', methods=['GET', 'POST'])
+def delete_answer(answer_id):
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    data_manager.delete_answer(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
 
 
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
