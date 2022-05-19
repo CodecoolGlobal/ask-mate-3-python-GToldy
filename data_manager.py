@@ -506,7 +506,7 @@ def update_answer_acception_by_id(cursor, answer_id, accepted_state):
     query = '''UPDATE answer
                 SET accepted_state = %(status)s
                 WHERE id=%(answer_id)s'''
-    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
+    cursor.execute(query, {'answer_id': answer_id, 'status': accepted_state})
 
 
 @database_common.connection_handler

@@ -77,19 +77,19 @@
 
 
                     {% if answer_owner %}
+                    <div>
+                        {% if answer.accepted_state == false %}
+                            <form class="accept-state" action="/answer/{{ answer.id }}/edit" method="post">
+                                <button id="accept" name="accepted_state" value="true">Accept answer</button>
+                            </form>
 
-                    {% if answer.accepted_state == false %}
-                        <form action="/answer/{{ answer.id }}/edit" method="post">
-                            <button name="accepted_state" value="true">Accept answer</button>
-                        </form>
+                        {% endif %}
 
-                    {% endif %}
-
-                    {% if answer.accepted_state %}
-                        <form action="/answer/{{ answer.id }}/edit" method="post">
-                            <button name="accepted_state" value="false">Unaccept answer</button>
-                        </form>
-
+                        {% if answer.accepted_state %}
+                            <form class="accept-state" action="/answer/{{ answer.id }}/edit" method="post">
+                                <button id="unaccept" name="accepted_state" value="false">Unaccept answer</button>
+                            </form>
+                    </div>
                     <h5>Accepted answer</h5>
                     {% endif %}
 
