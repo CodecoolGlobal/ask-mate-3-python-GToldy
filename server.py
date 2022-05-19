@@ -32,7 +32,7 @@ def list_questions():
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def get_question_page(question_id):
-    question_tag = data_manager.get_tag_by_question_id(question_id)
+    question_tags = data_manager.get_tag_by_question_id(question_id)
     comments = data_manager.get_comments()
     questions = data_manager.get_questions(question_id=question_id)[0]
     answers = data_manager.get_answers(question_id=question_id)
@@ -52,7 +52,7 @@ def get_question_page(question_id):
         return redirect(url_for('list_questions'))
 
     return render_template('question.html', question=questions, answers=answers, comments=comments,
-            tag_list=question_tag, answer_owner=answer_owner)
+            tag_list=question_tags, answer_owner=answer_owner)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
