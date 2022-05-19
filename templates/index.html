@@ -12,14 +12,13 @@
 <body>
     <header>
         <h1>Ghostbusters online hotline</h1>
-
         <nav>
             {% if session.username %}
                 <p id="logged-user">{{ session.username }}</p>
-                <a href="/users">Users</a>
             {% endif %}
             <ul>
                 {% if session.username %}
+                    <li><a href="{{ url_for('users_list') }}">Users</a></li>
                     <li><a href="{{ url_for('user_log_out') }}">Log out</a></li>
                 {% elif session.username == 'Admin' %}
 {#                    <li><a href="{{ url_for('admin_page') }}">Admin</a></li>#}
@@ -29,14 +28,12 @@
                 {% endif %}
             </ul>
         </nav>
-
         <img src="/static/images/gblogo.png" alt="Can not load image">
-
     </header>
     <section>
         {% block content %}{% endblock %}
     </section>
-{% include 'footer.html' %}
+    {% include 'footer.html' %}
 </body>
 
 </html>

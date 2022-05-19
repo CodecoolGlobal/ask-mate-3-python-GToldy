@@ -10,19 +10,23 @@
             </section>
         {% endif %}
     {% endwith %}
+
     <form action="{{ url_for('user_log_in') }}" method="POST">
         <div class="form-input">
             <label for="username-input">Username</label>
             <input type="text" id="username-input" name="username">
         </div>
+
         <div class="form-input">
             <label for="email-input">Email</label>
             <input type="text" id="email-input" name="email">
         </div>
+
         <div class="form-input">
             <label for="password-input">Password</label>
             <input type="password" id="password-input" name="password">
         </div>
+
         <button type="submit">Sign up</button>
     </form>
 {% endblock %}

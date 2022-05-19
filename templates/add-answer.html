@@ -1,15 +1,16 @@
 {% extends "index.html" %}
 
 {% block content %}
-<form action={% if answer.message %} "/answer/{{ answer.id }}/edit" {% else%} "/question/ {{ question.id }}/add-answer" {% endif %} method="POST" , enctype="multipart/form-data">
-    <div class="form-input">
-        <label for="message-input">Message</label>
-        <textarea name="message" id="message-input" cols="30" rows="10" >{{ answer.message if answer.message }}</textarea>
-    </div>
-    <div class="form-input">
-        <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png">
-    </div>
-    <button type="submit">Submit</button>
-</form>
+    <form action={% if answer.message %} "/answer/{{ answer.id }}/edit" {% else%} "/question/ {{ question.id }}/add-answer" {% endif %} method="POST" , enctype="multipart/form-data">
+        <div class="form-input">
+            <label for="message-input">Message</label>
+            <textarea name="message" id="message-input" cols="30" rows="10" >{{ answer.message if answer.message }}</textarea>
+        </div>
 
+        <div class="form-input">
+            <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
 {% endblock %}

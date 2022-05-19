@@ -1,21 +1,22 @@
 {% extends "index.html" %}
 
 {% block content %}
-<form action={% if question.title %} "/question/{{ question.id }}/edit" {% else%} "/add-question" {% endif %}
-    method="POST" enctype="multipart/form-data">
-    <div class="form-input">
-        <label for="title-input">Title</label>
-        <input type="text" name="title" id="title-input" value="{{ question.title if question.title }}">
-    </div>
-    <div class="form-input">
-        <label for="message-input">Message</label>
-        <textarea name="message" id="message-input" cols="30"
-            rows="10">{{ question.message if question.message }}</textarea>
-    </div>
-    <div class="form-input">
-        <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png">
-    </div>
-    <button type="submit">Submit</button>
-</form>
+    <form action={% if question.title %} "/question/{{ question.id }}/edit" {% else%} "/add-question" {% endif %} method="POST" enctype="multipart/form-data">
+        <div class="form-input">
+            <label for="title-input">Title</label>
+            <input type="text" name="title" id="title-input" value="{{ question.title if question.title }}">
+        </div>
 
+        <div class="form-input">
+            <label for="message-input">Message</label>
+            <textarea name="message" id="message-input" cols="30"
+                rows="10">{{ question.message if question.message }}</textarea>
+        </div>
+
+        <div class="form-input">
+            <input type="file" name="image" id="image-input" accept=".jpg,.jpeg,.png">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
 {% endblock %}

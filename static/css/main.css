@@ -166,6 +166,10 @@ ul {
     flex-direction: column;
 }
 
+.comment p {
+    margin: 0.5rem;
+}
+
 .delete-comment {
     font-size: 100%;
     font-family: "Tlwg Typist";
@@ -243,6 +247,26 @@ img {
     flex-direction: column;
     width: 100%;
     margin: 0.5rem;
+}
+
+.answer-nav-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.answer-nav-buttons a {
+    margin-left: 1rem;
+}
+
+.answer-buttons p {
+    margin: 0;
+}
+
+.vote-accept-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .edit-answer-comment,
@@ -351,4 +375,13 @@ li snap {
 
 #question-list a {
     padding-right: 1rem;
+}
+
+.accepted-answer {
+    font-size: 75%;
+    font-weight: bold;
+}
+
+footer {
+    margin: 1rem 0;
 }
