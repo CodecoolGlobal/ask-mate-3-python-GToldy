@@ -413,7 +413,7 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_all_users(cursor):
-    query = "SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date, " \
+    query = "SELECT users.user_id, users.username, users.reputation_number, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date, " \
             "COUNT(question.id) AS question_count, COUNT(answer.id) AS  answer_count, " \
             "COUNT(comment.id) AS comment_count " \
             "FROM users " \

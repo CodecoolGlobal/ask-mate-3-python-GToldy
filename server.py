@@ -41,12 +41,10 @@ def get_question_page(question_id):
 
     answer_owner = False
 
-
     if 'username' in session and questions['user_id'] is not None:
         user_name = data_manager.get_user_name_by_user_id(questions['user_id'])
         if escape(session['username']) == user_name['username']:
             answer_owner = True
-
 
     if request.method == 'POST':
         data_manager.delete_question_by_id(question_id)
@@ -100,23 +98,6 @@ def add_new_answer(question_id):
 def update_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     if request.method == 'POST':
-        if 'accepted_state' in request.form:
-            if 'accepted_state' == False:
-                user_data = data_manager.get_users_rep_num_for_Q(question_id)
-                rep_num = user_data['reputation_number']
-                user_id = user_data['user_id']
-                rep_num += 15
-                data_manager.update_users_rep_num(rep_num, user_id)
-            elif 'accepted_state' == True:
-                user_data = data_manager.get_users_rep_num_for_Q(question_id)
-                rep_num = user_data['reputation_number']
-                user_id = user_data['user_id']
-                rep_num -= 15
-                data_manager.update_users_rep_num(rep_num, user_id)
-
-            data_manager.update_answer_acception_by_id(answer_id, request.form['accepted_state'])
-
-            return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
@@ -133,12 +114,22 @@ def edit_answer(answer_id):
     answer = data_manager.get_answers_by_id(answer_id)
     question_id = answer['question_id']
 
-
-
     if request.method == 'POST':
         if 'accepted_state' in request.form:
-
             data_manager.update_answer_acception_by_id(answer_id, request.form['accepted_state'])
+            if request.form['accepted_state'] == 'True':
+                user_data = data_manager.get_users_rep_num_for_A(answer_id)
+                rep_num = user_data['reputation_number']
+                user_id = user_data['user_id']
+                rep_num += 15
+                data_manager.update_users_rep_num(rep_num, user_id)
+            else:
+                user_data = data_manager.get_users_rep_num_for_A(answer_id)
+                rep_num = user_data['reputation_number']
+                user_id = user_data['user_id']
+                rep_num -= 15
+                data_manager.update_users_rep_num(rep_num, user_id)
+
 
             return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
