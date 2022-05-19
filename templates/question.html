@@ -102,14 +102,18 @@
                                     <form action="/answer/{{ answer.id }}/edit" method="post">
                                         <button name="accepted_state" value=False>Unaccept answer</button>
                                     </form>
-
-                                    <span class="accepted-answer" style="width: 10rem">Accepted answer</span>
                                 {% endif %}
+                            {% endif %}
+
+                            {% if answer.accepted_state %}
+                                <span class="accepted-answer" style="width: 10rem">Accepted answer</span>
                             {% endif %}
 
                             {% if session.username %}
                                 <section class="vote-buttons">
-                                    <a href="/question/{{ question.id}}/vote-down">-</a> <p>{{ question.vote_number }}</p> <a href="/question/{{ question.id}}/vote-up">+</a>
+                                    <a href="/question/{{ question.id}}/vote-down">-</a>
+                                    <p>{{ question.vote_number }}</p>
+                                    <a href="/question/{{ question.id}}/vote-up">+</a>
                                 </section>
                             {% endif %}
                         </section>
