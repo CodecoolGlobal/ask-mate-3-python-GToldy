@@ -413,17 +413,18 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 
 @database_common.connection_handler
-def get_all_users(cursor):
-    query = '''SELECT users.user_id, users.username,
-                SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date,
-                COUNT(question.id) AS question_count,
-                COUNT(answer.question_id) AS answer_count,
-                COUNT(comment.id) AS comment_count
+def get_user_information(cursor):
+    query = ''' SELECT users.user_id,
+                users.username AS username,
+                SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,
+                COUNT(question.message) AS question_count,
+                COUNT(answer.message) AS answer_count,
+                COUNT(comment.message) AS comment_count
                 FROM users
-                LEFT JOIN question ON users.user_id=question.user_id
-                LEFT JOIN answer ON users.user_id = answer.question_id
-                LEFT JOIN comment ON users.user_id = comment.answer_id OR comment.question_id=question.id 
-                GROUP BY users.user_id'''
+                LEFT JOIN question ON users.user_id = question.user_id
+                LEFT JOIN answer ON users.user_id = answer.user_id
+                LEFT JOIN comment ON users.user_id = comment.user_id
+                GROUP BY users.user_id, users.username'''
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -523,22 +524,22 @@ def get_user_relations(cursor, user_id):
     query = '''SELECT users.user_id, 
                users.username,
                SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,
-               COUNT(question.id) AS question_count,
-               COUNT(answer.id) AS  answer_count, 
-               COUNT(comment.id) AS comment_count,
+               COUNT(question.message) AS question_count,
+               COUNT(answer.message) AS answer_count,
+               COUNT(comment.message) AS comment_count,
                question.message AS questions,
                answer.message AS messages,
                comment.message AS comments
                FROM users
-               LEFT JOIN question ON users.user_id=question.user_id
-               LEFT JOIN answer ON question.id = answer.question_id
-               LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
+               LEFT JOIN question ON users.user_id = question.user_id
+               LEFT JOIN answer ON users.user_id = answer.user_id
+               LEFT JOIN comment ON users.user_id = comment.user_id
                WHERE users.user_id = %(user_id)s
-               GROUP BY date, users.username, users.user_id, question.message, answer.message, comment.message'''
+               GROUP BY users.user_id, users.username, question.message, answer.message, comment.message'''
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
-  
+
 @database_common.connection_handler
 def get_users_rep_num_for_Q(cursor, question_id):
     query = '''SELECT reputation_number, users.user_id

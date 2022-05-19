@@ -249,7 +249,7 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/users')
 def users_list():
-    users = data_manager.get_all_users()
+    users = data_manager.get_user_information()
     return render_template('users.html', users=users)
 
 
