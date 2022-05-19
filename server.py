@@ -99,6 +99,23 @@ def add_new_answer(question_id):
 def update_question(question_id):
     question = data_manager.get_question_by_id(question_id)
     if request.method == 'POST':
+        if 'accepted_state' in request.form:
+            if 'accepted_state' == False:
+                user_data = data_manager.get_users_rep_num_for_Q(question_id)
+                rep_num = user_data['reputation_number']
+                user_id = user_data['user_id']
+                rep_num += 15
+                data_manager.update_users_rep_num(rep_num, user_id)
+            elif 'accepted_state' == True:
+                user_data = data_manager.get_users_rep_num_for_Q(question_id)
+                rep_num = user_data['reputation_number']
+                user_id = user_data['user_id']
+                rep_num -= 15
+                data_manager.update_users_rep_num(rep_num, user_id)
+
+            data_manager.update_answer_acception_by_id(answer_id, request.form['accepted_state'])
+
+            return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
         image_file = f'{time.time()}_{image.filename}'
         if image.filename != '':
