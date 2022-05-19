@@ -412,6 +412,29 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 
 @database_common.connection_handler
+def get_all_users(cursor):
+    query = "SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date, " \
+            "COUNT(question.id) AS question_count, COUNT(answer.id) AS  answer_count, " \
+            "COUNT(comment.id) AS comment_count " \
+            "FROM users " \
+            "LEFT JOIN question ON users.user_id=question.user_id " \
+            "LEFT JOIN answer ON question.id = answer.question_id " \
+            "LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id " \
+            "GROUP BY date, users.username, users.user_id "
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_specific_user(cursor, user_id):
+    query = ''' SELECT users.username, users.user_id, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date
+        FROM users 
+        WHERE user_id = %(user_id)s'''
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+    
+@database_common.connection_handler
 def add_new_user(cursor, username, email, password):
     registration_time = datetime.datetime.now()
     query = "INSERT INTO users " \
@@ -501,6 +524,20 @@ def get_users_rep_num_for_A(cursor, answer_id):
     return cursor.fetchone()
 
 
+@database_common.connection_handler
+def get_user_relations(cursor, user_id):
+    query = '''SELECT users.user_id, users.username, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,COUNT(question.id) AS question_count,
+    COUNT(answer.id) AS  answer_count, COUNT(comment.id) AS comment_count
+    FROM users
+    LEFT JOIN question ON users.user_id=question.user_id
+    LEFT JOIN answer ON question.id = answer.question_id
+    LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
+    WHERE users.user_id = %(user_id)s
+    GROUP BY date, users.username, users.user_id'''
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchone()
+
+  
 @database_common.connection_handler
 def get_users_rep_num_for_Q(cursor, question_id):
     query = '''SELECT reputation_number, users.user_id

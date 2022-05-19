@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>User list:</h1>
+<section>
+
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Registration date</th>
+                <th>Number of asked questions</th>
+                <th>Number of answers</th>
+                <th>Number of comments</th>
+                <th>Reputation</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td><a href="{{ url_for('user_page', user_id=user.user_id) }}">{{ user.username }}</a></td>
+                <td>{{ user.date }}</td>
+                <td>{{ user.question_count }}</td>
+                <td>{{ user.answer_count }}</td>
+                <td>{{ user.comment_count }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+</section>
+
+{% endblock %}

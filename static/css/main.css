@@ -302,6 +302,19 @@ mark {
     margin: 0.5rem;
 }
 
+
+table,th, td {
+    margin: 0.25rem;
+    padding: 0.25rem;
+    color: white;
+    border:#00212f solid 2px;
+    border-collapse: collapse;
+}
+
+th {
+    border:#00212f solid 2px;
+}
+
 .vote-buttons,
 #tag-section {
     display:flex;
@@ -339,4 +352,3 @@ li snap {
 #question-list a {
     padding-right: 1rem;
 }
-
