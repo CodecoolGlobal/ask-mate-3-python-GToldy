@@ -11,22 +11,28 @@
 
 <body>
     <header>
+
         <h1>Ghostbusters online hotline</h1>
 
-        <nav>
-            {% if session.username %}
-                <p id="logged-user">{{ session.username }}</p>
-                <a href="/users">Users</a>
-            {% endif %}
+        <nav class="user-login-header">
+            <div class="user-link">
+                {% if session.username %}
+                    <p id="logged-user">{{ session.username }}</p>
+                {% endif %}
+            </div>
             <ul>
                 {% if session.username %}
+                    <li><a href="/users">Users</a></li>
                     <li><a href="{{ url_for('user_log_out') }}">Log out</a></li>
+
+
                 {% elif session.username == 'Admin' %}
 {#                    <li><a href="{{ url_for('admin_page') }}">Admin</a></li>#}
                 {% else %}
                     <li><a href="{{ url_for('user_registration') }}">Sign up</a></li>
                     <li><a href="{{ url_for('user_log_in') }}">Log in</a></li>
                 {% endif %}
+
             </ul>
         </nav>
 
