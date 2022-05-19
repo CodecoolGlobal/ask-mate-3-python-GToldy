@@ -147,7 +147,7 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
 
     add = """
         INSERT INTO answer
-        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, DEFAULT, %(user_id)s )
+        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s, DEFAULT)
         """
     cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
                          'message': question_details['message'], 'image': image_file, 'user_id': user_id['user_id']})
