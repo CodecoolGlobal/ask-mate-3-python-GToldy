@@ -428,8 +428,6 @@ def get_user_information(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
-# date, users.username, users.user_id, question.message, answer.message, comment.message
-
 
 @database_common.connection_handler
 def get_specific_user(cursor, user_id):
@@ -506,7 +504,7 @@ def update_answer_acception_by_id(cursor, answer_id, accepted_state):
     query = '''UPDATE answer
                 SET accepted_state = %(status)s
                 WHERE id=%(answer_id)s'''
-    cursor.execute(query, {'answer_id': answer_id, 'status': accepted_state})
+    cursor.execute(query, {'vote_number': vote_number, 'answer_id': answer_id})
 
 
 @database_common.connection_handler
@@ -524,18 +522,18 @@ def get_user_relations(cursor, user_id):
     query = '''SELECT users.user_id, 
                users.username,
                SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date ,
-               COUNT(question.message) AS question_count,
-               COUNT(answer.message) AS answer_count,
-               COUNT(comment.message) AS comment_count,
+               COUNT(question.id) AS question_count,
+               COUNT(answer.id) AS  answer_count, 
+               COUNT(comment.id) AS comment_count,
                question.message AS questions,
                answer.message AS messages,
                comment.message AS comments
                FROM users
-               LEFT JOIN question ON users.user_id = question.user_id
-               LEFT JOIN answer ON users.user_id = answer.user_id
-               LEFT JOIN comment ON users.user_id = comment.user_id
+               LEFT JOIN question ON users.user_id=question.user_id
+               LEFT JOIN answer ON question.id = answer.question_id
+               LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id
                WHERE users.user_id = %(user_id)s
-               GROUP BY users.user_id, users.username, question.message, answer.message, comment.message'''
+               GROUP BY date, users.username, users.user_id, question.message, answer.message, comment.message'''
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
