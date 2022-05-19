@@ -119,18 +119,17 @@ def edit_answer(answer_id):
         if 'accepted_state' in request.form:
             data_manager.update_answer_acception_by_id(answer_id, request.form['accepted_state'])
             if request.form['accepted_state'] == 'True':
-                user_data = data_manager.get_users_rep_num_for_A(answer_id)
+                user_data = data_manager.get_users_rep_num_for_a(answer_id, )
                 rep_num = user_data['reputation_number']
                 user_id = user_data['user_id']
                 rep_num += 15
                 data_manager.update_users_rep_num(rep_num, user_id)
             else:
-                user_data = data_manager.get_users_rep_num_for_A(answer_id)
+                user_data = data_manager.get_users_rep_num_for_a(answer_id, )
                 rep_num = user_data['reputation_number']
                 user_id = user_data['user_id']
                 rep_num -= 15
                 data_manager.update_users_rep_num(rep_num, user_id)
-
 
             return redirect(url_for('get_question_page', question_id=question_id))
         image = request.files['image']
@@ -273,8 +272,12 @@ def users_list():
 def user_page(user_id):
     user = data_manager.get_specific_user(user_id)
     user_relations = data_manager.get_user_relations(user_id)
+    questions = data_manager.get_questions_for_user_id(user_id)
+    answers = data_manager.get_answers_for_user_id(user_id)
+    comments = data_manager.get_comments_for_user_id(user_id)
 
-    return render_template('user.html', user=user, user_relations=user_relations)
+    return render_template('user.html', user=user, user_relations=user_relations, questions=questions, answers=answers,
+                           comments=comments)
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -323,7 +326,7 @@ def question_vote_up(question_id):
     vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
     vote_num += 1
     data_manager.update_question_vote_num(question_id, vote_num)
-    user_data = data_manager.get_users_rep_num_for_Q(question_id)
+    user_data = data_manager.get_users_rep_num_for_q(question_id, )
     rep_num = user_data['reputation_number']
     user_id = user_data['user_id']
     rep_num += 5
@@ -336,7 +339,7 @@ def question_vote_down(question_id):
     vote_num = data_manager.get_question_vote_num(question_id)['vote_number']
     vote_num -= 1
     data_manager.update_question_vote_num(question_id, vote_num)
-    user_data = data_manager.get_users_rep_num_for_Q(question_id)
+    user_data = data_manager.get_users_rep_num_for_q(question_id, )
     rep_num = user_data['reputation_number']
     user_id = user_data['user_id']
     rep_num -= 2
@@ -350,7 +353,7 @@ def answer_vote_up(answer_id):
     vote_num += 1
     data_manager.update_answer_vote_num(answer_id, vote_num)
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
-    user_data = data_manager.get_users_rep_num_for_A(answer_id)
+    user_data = data_manager.get_users_rep_num_for_a(answer_id, )
     rep_num = user_data['reputation_number']
     user_id = user_data['user_id']
     rep_num += 10
@@ -364,7 +367,7 @@ def answer_vote_down(answer_id):
     vote_num -= 1
     data_manager.update_answer_vote_num(answer_id, vote_num)
     question_id = data_manager.get_question_id_by_answer_id(answer_id)
-    user_data = data_manager.get_users_rep_num_for_A(answer_id)
+    user_data = data_manager.get_users_rep_num_for_a(answer_id, )
     rep_num = user_data['reputation_number']
     user_id = user_data['user_id']
     rep_num -= 2

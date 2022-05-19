@@ -286,6 +286,10 @@ img {
     background:#1f4b9d;
 }
 
+.indent {
+    margin-left: 5rem;
+}
+
 .answer-result {
     margin-left: 1.5rem;
 }

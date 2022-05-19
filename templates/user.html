@@ -13,13 +13,22 @@
                 Registration date: {{ user.date }}
             </li>
             <li>
-                Questions : {{ user_relations.question_count }}
+                Questions: {{ user_relations.questions }}
+                {% for q in questions %}
+                    <li class="indent">{{ q.title }}</li>
+                {% endfor %}
             </li>
             <li>
-                Answers: {{ user_relations.answer_count }}
+                Answers: {{ user_relations.answers }}
+                {% for a in answers %}
+                    <li class="indent">{{ a.message }}</li>
+                {% endfor %}
             </li>
             <li>
-                Comments: {{ user_relations.comment_count }}
+                Comments: {{ user_relations.comments }}
+                {% for c in comments %}
+                    <li class="indent">{{ c.message }}</li>
+                {% endfor %}
             </li>
         </ul>
     </section>
