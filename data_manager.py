@@ -395,7 +395,7 @@ def get_all_tags_with_num(cursor):
 
 @database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):
-    query = '''SELECT name, question_id
+    query = '''SELECT name, question_id, tag.id
             FROM tag
             INNER JOIN question_tag on tag.id = question_tag.tag_id
             WHERE question_id=%(question_id)s'''
