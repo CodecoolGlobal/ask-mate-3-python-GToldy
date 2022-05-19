@@ -399,3 +399,24 @@ footer {
     font-weight: 0;
     letter-spacing: .5px
 }
+
+.flash-messages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flash-info {
+    color: #b058ea;
+    font-size: 120%;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 1rem 0 .5rem;
+}
+
+.flash-error {
+    color: #ff006a;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 1rem 0 .5rem;
+}
