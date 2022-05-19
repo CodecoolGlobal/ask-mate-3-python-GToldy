@@ -1,4 +1,7 @@
-* {color: black;}
+* {
+    color: black;
+    font-family: aakar;
+}
 
 html {
     position:relative;
@@ -66,8 +69,7 @@ nav ul {
 }
 
 body {
-    background: #023144;  
-    font-family: aakar;
+    background: #023144;
     margin: 1rem auto;
     padding: 20px;
     width: 70vw;
