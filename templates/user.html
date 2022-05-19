@@ -4,31 +4,34 @@
     <section>
         <ul>
             <li>
-                User ID: {{ user.user_id }}
+                User ID: {{ user_data.user_id }}
             </li>
             <li>
-                Username: {{ user.username }}
+                Username: {{ user_data.username }}
             </li>
             <li>
-                Registration date: {{ user.date }}
+                Registration date: {{ user_data.date }}
             </li>
             <li>
-                Questions: {{ user_relations.questions }}
+                Questions: {{ user_data.questions }}
                 {% for q in questions %}
                     <li class="indent">{{ q.title }}</li>
                 {% endfor %}
             </li>
             <li>
-                Answers: {{ user_relations.answers }}
+                Answers: {{ user_data.answers }}
                 {% for a in answers %}
                     <li class="indent">{{ a.message }}</li>
                 {% endfor %}
             </li>
             <li>
-                Comments: {{ user_relations.comments }}
+                Comments: {{ user_data.comments }}
                 {% for c in comments %}
                     <li class="indent">{{ c.message }}</li>
                 {% endfor %}
+            </li>
+            <li>
+                Reputation: {{ user_data.reputation }}
             </li>
         </ul>
     </section>

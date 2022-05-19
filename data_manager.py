@@ -441,15 +441,6 @@ def get_all_users(cursor):
 
 
 @database_common.connection_handler
-def get_specific_user(cursor, user_id):
-    query = ''' SELECT users.username, users.user_id, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date
-        FROM users 
-        WHERE user_id = %(user_id)s'''
-    cursor.execute(query, {'user_id': user_id})
-    return cursor.fetchone()
-
-
-@database_common.connection_handler
 def add_new_user(cursor, username, email, password):
     registration_time = datetime.datetime.now()
     query = "INSERT INTO users " \
