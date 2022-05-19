@@ -109,7 +109,7 @@
                             {% if session.username %}
                                 <section class="vote-buttons">
                                     <a href="/question/{{ question.id}}/vote-down">-</a>
-                                    <p>{{ question.vote_number }}</p>
+                                    <p>{{ answer.vote_number }}</p>
                                     <a href="/question/{{ question.id}}/vote-up">+</a>
                                 </section>
                             {% endif %}
