@@ -11,8 +11,6 @@ from util import mark_search_word
 app = Flask(__name__)
 app.secret_key = util.generate_random_secret_key()
 
-app.secret_key = b'_5#y2LF4Q8z'
-
 
 @app.route('/')
 def latest_5_questions():
@@ -42,8 +40,11 @@ def get_question_page(question_id):
     answer_owner = False
 
     if 'username' in session and questions['user_id'] is not None:
+
         user_name = data_manager.get_user_name_by_user_id(questions['user_id'])
-        if escape(session['username']) == user_name['username']:
+
+        if user_name is not None and escape(session['username']) == user_name['username']:
+
             answer_owner = True
 
     if request.method == 'POST':
