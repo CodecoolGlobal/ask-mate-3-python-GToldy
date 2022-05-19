@@ -18,10 +18,10 @@
                 <h3>{{ question.title if question.title }}</h3>
                 <p>{{ question.message if question.message }}</p>
             </section>
+
             {% if question.image %}
                 <img src="/static/images/{{ question.image }}">
             {% endif %}
-
         </section>
 
         <footer id="question-footer">
@@ -43,7 +43,6 @@
         </footer>
 
         <section id="question-comments">
-            <p id="comments-text" >Comments for question:</p>
             <ul>
                 {% if comment is not none %}
                     {% for comment in comments %}
@@ -92,15 +91,13 @@
 
                         <section class="vote-accept-buttons">
                             {% if answer_owner %}
-                                {% if answer.accepted_state == false %}
-                                    <form action="/answer/{{ answer.id }}/edit" method="post">
-                                        <button name="accepted_state" value=True>Accept answer</button>
-                                    </form>
-                                {% endif %}
-
                                 {% if answer.accepted_state %}
                                     <form action="/answer/{{ answer.id }}/edit" method="post">
                                         <button name="accepted_state" value=False>Unaccept answer</button>
+                                    </form>
+                                {% else %}
+                                    <form action="/answer/{{ answer.id }}/edit" method="post">
+                                        <button name="accepted_state" value=True>Accept answer</button>
                                     </form>
                                 {% endif %}
                             {% endif %}

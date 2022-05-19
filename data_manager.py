@@ -147,7 +147,7 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
 
     add = """
         INSERT INTO answer
-        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, %(user_id)s )
+        VALUES(DEFAULT, %(time)s, %(vote_n)s, %(question_id)s, %(message)s, %(image)s, DEFAULT, %(user_id)s )
         """
     cursor.execute(add, {'time': submission_time, 'vote_n': 0, 'question_id': question_id,
                          'message': question_details['message'], 'image': image_file, 'user_id': user_id['user_id']})
@@ -156,7 +156,6 @@ def add_new_answer(cursor, question_details, question_id, user_id, image_file=''
 @database_common.connection_handler
 def add_new_comment_to_question(cursor, comment, question_id, user_id):
     submission_time = datetime.datetime.now()
-
 
     add = """
         INSERT INTO comment
@@ -393,6 +392,7 @@ def get_all_tags_with_num(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_tag_by_question_id(cursor, question_id):
     query = '''SELECT name, question_id, tag.id
@@ -413,14 +413,29 @@ def delete_tag_from_question_tags(cursor, question_id, tag_id):
 
 @database_common.connection_handler
 def get_all_users(cursor):
-    query = "SELECT users.user_id, users.username, users.reputation_number, SPLIT_PART(users.registration_date::TEXT, ' ', 1) AS date, " \
-            "COUNT(question.id) AS question_count, COUNT(answer.id) AS  answer_count, " \
-            "COUNT(comment.id) AS comment_count " \
-            "FROM users " \
-            "LEFT JOIN question ON users.user_id=question.user_id " \
-            "LEFT JOIN answer ON question.id = answer.question_id " \
-            "LEFT JOIN comment ON answer.id = comment.answer_id OR comment.question_id=question.id " \
-            "GROUP BY date, users.username, users.user_id "
+    query = \
+        "WITH question_count AS (SELECT users.user_id, question.user_id AS question_user_id, " \
+        "COUNT(question.user_id) AS questions " \
+        "FROM users " \
+        "LEFT JOIN question ON users.user_id = question.user_id " \
+        "GROUP BY users.user_id, question_user_id), " \
+        "answer_count AS (SELECT users.user_id as user_id, COUNT(answer.user_id) AS answers " \
+        "FROM users " \
+        "LEFT JOIN answer ON users.user_id = answer.user_id " \
+        "GROUP BY users.user_id), " \
+        "comment_count AS (SELECT users.user_id as user_id, COUNT(comment.user_id) AS comments " \
+        "FROM users " \
+        "LEFT JOIN comment ON users.user_id = comment.user_id " \
+        "GROUP BY users.user_id) " \
+        "SELECT users.user_id AS user_id, users.username AS username, " \
+        "SPLIT_PART(users.registration_date::text, ' ', 1) as date, " \
+        "users.reputation_number as reputation," \
+        "question_count.questions AS questions, answer_count.answers AS answers, comment_count.comments AS comments " \
+        "FROM users " \
+        "LEFT JOIN question_count ON users.user_id = question_count.user_id " \
+        "LEFT JOIN answer_count ON users.user_id = answer_count.user_id " \
+        "LEFT JOIN comment_count ON users.user_id = comment_count.user_id " \
+        "ORDER BY users.username;"
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -433,13 +448,14 @@ def get_specific_user(cursor, user_id):
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
-    
+
 @database_common.connection_handler
 def add_new_user(cursor, username, email, password):
     registration_time = datetime.datetime.now()
     query = "INSERT INTO users " \
             "VALUES (DEFAULT, %(username)s, %(email)s, %(password)s, %(registration_time)s)"
-    cursor.execute(query, {'username': username, 'email': email, 'password': password, 'registration_time': registration_time})
+    cursor.execute(query,
+                   {'username': username, 'email': email, 'password': password, 'registration_time': registration_time})
 
 
 @database_common.connection_handler
@@ -537,7 +553,7 @@ def get_user_relations(cursor, user_id):
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchone()
 
-  
+
 @database_common.connection_handler
 def get_users_rep_num_for_Q(cursor, question_id):
     query = '''SELECT reputation_number, users.user_id

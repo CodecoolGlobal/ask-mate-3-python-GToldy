@@ -16,10 +16,10 @@
                 <tr>
                     <td><a href="{{ url_for('user_page', user_id=user.user_id) }}">{{ user.username }}</a></td>
                     <td>{{ user.date }}</td>
-                    <td>{{ user.question_count }}</td>
-                    <td>{{ user.answer_count }}</td>
-                    <td>{{ user.comment_count }}</td>
-                    <td>{{ user.reputation_number }}</td>
+                    <td>{{ user.questions }}</td>
+                    <td>{{ user.answers }}</td>
+                    <td>{{ user.comments }}</td>
+                    <td>{{ user.reputation }}</td>
                 </tr>
             {% endfor %}
         </table>
