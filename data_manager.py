@@ -567,8 +567,23 @@ def get_user_name_by_user_id(cursor, user_id):
     return cursor.fetchone()
 
 
+
+@database_common.connection_handler
+def get_comment_id_by_answer_id(cursor, answer_id):
+    query = """
+        SELECT id
+        FROM comment
+        WHERE answer_id = %(a_id)s
+        """
+    cursor.execute(query, {'a_id': answer_id})
+    return cursor.fetchone()
+
+
+
 @database_common.connection_handler
 def delete_answer(cursor, answer_id):
+    a_id = get_comment_id_by_answer_id(answer_id)
+    delete_comment_by_id(a_id['id'])
     query = '''DELETE
             FROM answer
             WHERE id=%(answer_id)s'''
