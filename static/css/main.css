@@ -73,6 +73,7 @@ form {
 #all-tags-button,
 #edit-question-button,
 #add-answer-button,
+#delete-answer-button,
 #add-new-comment,
 #top-question-button {
     color: black;
@@ -87,6 +88,7 @@ form {
 #add-question-button:hover,
 #edit-question-button:hover,
 #add-answer-button:hover,
+#delete-answer-button-answer-button:hover,
 #add-new-comment:hover,
 #top-question-button:hover {
     background:#42c1aa;
@@ -97,6 +99,7 @@ form {
 #add-question-button:active,
 #edit-question-button:active,
 #add-answer-button:active,
+#delete-answer-button-answer-button:active,
 #add-new-comment:active,
 #top-question-button:active {
     box-shadow:inset 0 0 5px black;
@@ -150,7 +153,7 @@ ul {
     margin:0;
 }
 
-.edit-answer-button, .delete-comment {
+.edit-answer-button, .delete-answer-button, .delete-comment {
     color: white;
     background: none;
     right: 25%;
@@ -166,14 +169,14 @@ ul {
     flex-direction: column;
 }
 
-.delete-comment {
+.delete-comment, .delete-answer-button {
     font-size: 100%;
     font-family: "Tlwg Typist";
 }
-.edit-answer-button:hover {
+.edit-answer-button:hover, .delete-answer-button:hover {
     background:#2456b3eb;
 }
-.edit-answer-button:active {
+.edit-answer-button:active, .delete-answer-button:active {
     box-shadow:inset 0 0 5px #0000004a;
 }
 

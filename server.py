@@ -144,6 +144,13 @@ def edit_answer(answer_id):
     return render_template('add-answer.html', answer=answer)
 
 
+@app.route('/answer/<answer_id>/delete', methods=['GET', 'POST'])
+def delete_answer(answer_id):
+    question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    data_manager.delete_answer(answer_id)
+    return redirect(url_for('get_question_page', question_id=question_id))
+
+
 @app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
 def new_comment_to_question(question_id):
     where = "question"
