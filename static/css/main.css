@@ -266,7 +266,12 @@ img {
 .vote-accept-buttons {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+}
+
+.vote-accept-buttons form {
+    margin: 0;
+    width: 100%;
 }
 
 .edit-answer-comment,
@@ -378,8 +383,10 @@ li snap {
 }
 
 .accepted-answer {
+    color: white;
     font-size: 75%;
     font-weight: bold;
+    letter-spacing: 1px;
 }
 
 footer {
